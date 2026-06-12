@@ -91,6 +91,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   clearAuth: () => {
+    if (typeof document !== "undefined") {
+      document.cookie = "mediflow_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = "mediflow_refresh=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
     set({ accessToken: null, user: null, initialized: true });
   },
 
@@ -110,6 +114,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
 
     const data = await response.json();
+    if (typeof document !== "undefined") {
+      document.cookie = `mediflow_role=${data.user.role}; path=/; max-age=604800; SameSite=Lax`;
+      document.cookie = `mediflow_refresh=true; path=/; max-age=604800; SameSite=Lax`;
+    }
     set({
       accessToken: data.accessToken,
       initialized: true,
@@ -142,6 +150,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
 
     const data = await response.json();
+    if (typeof document !== "undefined") {
+      document.cookie = `mediflow_role=${data.user.role}; path=/; max-age=604800; SameSite=Lax`;
+      document.cookie = `mediflow_refresh=true; path=/; max-age=604800; SameSite=Lax`;
+    }
     set({
       accessToken: data.accessToken,
       initialized: true,
@@ -168,6 +180,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     } catch {
       // Best-effort logout — clear local state regardless
     }
+    if (typeof document !== "undefined") {
+      document.cookie = "mediflow_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = "mediflow_refresh=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
     set({ accessToken: null, user: null, initialized: true });
   },
 
@@ -184,11 +200,19 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         });
 
         if (!response.ok) {
+          if (typeof document !== "undefined") {
+            document.cookie = "mediflow_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            document.cookie = "mediflow_refresh=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+          }
           get().clearAuth();
           return false;
         }
 
         const data = await response.json();
+        if (typeof document !== "undefined") {
+          document.cookie = `mediflow_role=${data.user.role}; path=/; max-age=604800; SameSite=Lax`;
+          document.cookie = `mediflow_refresh=true; path=/; max-age=604800; SameSite=Lax`;
+        }
         set({
           accessToken: data.accessToken,
           user: {
