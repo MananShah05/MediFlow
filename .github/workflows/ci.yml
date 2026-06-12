@@ -1,4 +1,4 @@
-name: CareOS CI
+name: MediFLOW CI
 
 on:
   push:
@@ -46,13 +46,13 @@ jobs:
       postgres:
         image: postgres:16-alpine
         env:
-          POSTGRES_DB: careos_test
-          POSTGRES_USER: careos
-          POSTGRES_PASSWORD: careos_test
+          POSTGRES_DB: mediflow_test
+          POSTGRES_USER: mediflow
+          POSTGRES_PASSWORD: mediflow_test
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U careos -d careos_test"
+          --health-cmd "pg_isready -U mediflow -d mediflow_test"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -68,7 +68,7 @@ jobs:
           --health-retries 5
 
     env:
-      DATABASE_URL: postgresql://careos:careos_test@localhost:5432/careos_test
+      DATABASE_URL: postgresql://mediflow:mediflow_test@localhost:5432/mediflow_test
       REDIS_URL: redis://localhost:6379
       JWT_SECRET: ci-test-jwt-secret
       JWT_REFRESH_SECRET: ci-test-refresh-secret
