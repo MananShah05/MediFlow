@@ -15,7 +15,10 @@ const envSchema = z.object({
   JWT_REFRESH_SECRET: z.string().min(32),
   BCRYPT_ROUNDS: z.coerce.number().int().default(12),
   PORT: z.coerce.number().int().default(3001),
-  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+  NODE_ENV: z.preprocess(
+    (value) => (value === "building" ? "production" : value),
+    z.enum(["development", "production", "test"]).default("development")
+  ),
   CLIENT_ORIGIN: optionalNonEmptyString,
   COOKIE_DOMAIN: optionalNonEmptyString,
   COOKIE_SAME_SITE: z.preprocess(
