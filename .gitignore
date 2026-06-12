@@ -53,6 +53,7 @@ docker/clamav/data/
 *.tsbuildinfo
 .eslintcache
 .prettiercache
+.cursorrules
 
 # Documents
 *.md
