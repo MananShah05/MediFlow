@@ -42,13 +42,17 @@ export async function buildApp() {
 
   const allowedOrigins = getAllowedOrigins();
 
+  if (env.NODE_ENV === "production" && (!allowedOrigins || allowedOrigins.length === 0)) {
+    logger.warn("⚠️ CLIENT_ORIGIN is not set or is empty in production. Falling back to allowing all origins dynamically (CORS reflection) for ease of deployment. Please configure CLIENT_ORIGIN to secure your API!");
+  }
+
   await fastify.register(cors, {
     origin:
       env.NODE_ENV === "development"
         ? true
         : allowedOrigins && allowedOrigins.length > 0
           ? allowedOrigins
-          : false,
+          : true,
     credentials: true,
   });
 

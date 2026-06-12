@@ -15,6 +15,12 @@ const rawApiBaseUrl =
   process.env.NEXT_PUBLIC_API_URL ??
   "http://localhost:3001/api/v1";
 
+if (typeof window !== "undefined" && process.env.NODE_ENV === "production" && rawApiBaseUrl.includes("localhost")) {
+  console.warn(
+    "⚠️ NEXT_PUBLIC_API_URL / NEXT_PUBLIC_API_BASE_URL is pointing to localhost in production. Please set these in your frontend build environment settings."
+  );
+}
+
 export const API_BASE_URL = rawApiBaseUrl.endsWith("/api/v1")
   ? rawApiBaseUrl
   : `${rawApiBaseUrl.replace(/\/$/, "")}/api/v1`;
