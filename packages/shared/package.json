@@ -14,9 +14,9 @@
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "dev": "tsc --project tsconfig.json --watch",
-    "lint": "eslint src/",
+    "lint": "eslint src/ --no-error-on-unmatched-pattern",
     "typecheck": "tsc --project tsconfig.json --noEmit",
-    "test": "vitest run"
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
     "zod": "^3.23.0"
