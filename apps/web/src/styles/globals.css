@@ -1,0 +1,356 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   CareOS Design System — CSS Custom Properties
+   Source of truth: Design.md v1.0
+   ============================================================ */
+
+@layer base {
+  :root {
+    /* ── Surfaces ── */
+    --color-bg-base: #0A0F1E;
+    --color-bg-surface: #111827;
+    --color-bg-elevated: #1C2333;
+    --color-bg-subtle: #1E2D40;
+    /* Legacy surfaces mapped to new ones */
+    --color-bg-overlay: var(--color-bg-elevated);
+    --color-bg-muted: var(--color-bg-base);
+
+    /* ── Borders ── */
+    --color-border: #2A3A52;
+    --color-border-strong: #3B5070;
+    /* Legacy borders mapped to new ones */
+    --color-border-default: var(--color-border);
+    --color-border-subtle: var(--color-bg-base);
+
+    /* ── Brand Primary ── */
+    --color-primary-50: #E6F1FF;
+    --color-primary-100: #C2DBFF;
+    --color-primary-200: #85B8FF;
+    --color-primary-300: #4D96FF;
+    --color-primary-400: #1A75FF;
+    --color-primary-500: #0057E7;
+    --color-primary-600: #0047C4;
+    --color-primary-700: #0038A0;
+    --color-primary-800: #002A7A;
+    --color-primary-900: #001C54;
+
+    /* ── Text ── */
+    --color-text-primary: #F0F4FF;
+    --color-text-secondary: #94A8C7;
+    --color-text-tertiary: #5A7290;
+    --color-text-inverse: #0A0F1E;
+    --color-text-link: #4D96FF;
+
+    /* ── Semantic — Clinical (New values) ── */
+    --color-danger-bg: #2D0F0F;
+    --color-danger-border: #7F1D1D;
+    --color-danger-text: #FCA5A5;
+    --color-danger-strong: #EF4444;
+
+    --color-warning-bg: #2D1F00;
+    --color-warning-border: #78350F;
+    --color-warning-text: #FCD34D;
+    --color-warning-strong: #F59E0B;
+
+    --color-success-bg: #032012;
+    --color-success-border: #14532D;
+    --color-success-text: #86EFAC;
+    --color-success-strong: #22C55E;
+
+    --color-info-bg: #0C1E33;
+    --color-info-border: #1E3A5F;
+    --color-info-text: #93C5FD;
+    --color-info-strong: #3B82F6;
+
+    /* Legacy semantic mappings bound to new variables */
+    --color-clinical: var(--color-primary-500);
+    --color-clinical-muted: var(--color-primary-900);
+    --color-clinical-hover: var(--color-primary-600);
+    --color-warning: var(--color-warning-strong);
+    --color-warning-muted: var(--color-warning-bg);
+    --color-critical: var(--color-danger-strong);
+    --color-critical-muted: var(--color-danger-bg);
+    --color-critical-text: var(--color-danger-text);
+    --color-success: var(--color-success-strong);
+    --color-success-muted: var(--color-success-bg);
+    --color-info: var(--color-info-strong);
+    --color-info-muted: var(--color-info-bg);
+
+    /* ── Neutral Scale ── */
+    --color-neutral-50: #F8FAFC;
+    --color-neutral-100: #F1F5F9;
+    --color-neutral-200: #E2E8F0;
+    --color-neutral-400: #94A3B8;
+    --color-neutral-600: #475569;
+    --color-neutral-800: #1E293B;
+    --color-neutral-900: #0F172A;
+
+    /* ── Role Accent Colors ── */
+    --color-role-patient: #7C3AED;
+    --color-role-doctor: #0057E7;
+    --color-role-nurse: #059669;
+    --color-role-admin: #0891B2;
+    --color-role-superadmin: #DC2626;
+
+    /* ── Surfaces — Role-tinted headers ── */
+    --color-portal-patient-tint: rgba(124, 58, 237, 0.06);
+    --color-portal-doctor-tint: rgba(0, 87, 231, 0.06);
+    --color-portal-nurse-tint: rgba(5, 150, 105, 0.06);
+    --color-portal-admin-tint: rgba(8, 145, 178, 0.06);
+    --color-portal-superadmin-tint: rgba(220, 38, 38, 0.06);
+
+    /* ── Typography ── */
+    --font-display: 'DM Sans', system-ui, sans-serif;
+    --font-ui: 'Inter', system-ui, sans-serif;
+    --font-data: 'JetBrains Mono', 'Fira Code', monospace;
+
+    /* ── Type Scale ── */
+    --text-xs: 11px;
+    --text-sm: 13px;
+    --text-base: 15px;
+    --text-lg: 17px;
+    --text-xl: 20px;
+    --text-2xl: 24px;
+    --text-3xl: 30px;
+    --text-4xl: 36px;
+
+    /* ── Line Heights ── */
+    --leading-tight: 1.25;
+    --leading-normal: 1.5;
+    --leading-loose: 1.75;
+
+    /* ── Font Weights ── */
+    --weight-normal: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+
+    /* ── Spacing (4px base) ── */
+    --space-0: 0;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+    --space-20: 80px;
+
+    /* ── Border Radius ── */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+
+    /* ── Shadows ── */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --shadow-clinical: 0 0 0 2px var(--color-critical);
+
+    /* ── Easing Curves (Emil Kowalski aligned) ── */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+    /* ── Standard Durations ── */
+    --duration-instant: 0ms;
+    --duration-fast: 100ms;
+    --duration-ui: 175ms;
+    --duration-modal: 220ms;
+    --duration-stagger: 50ms;
+  }
+
+  /* ── Base Reset ── */
+  *,
+  *::before,
+  *::after {
+    border-color: var(--color-border-default);
+  }
+
+  html {
+    font-family: var(--font-ui);
+    background-color: var(--color-bg-base);
+    color: var(--color-text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-bg-base);
+    color: var(--color-text-primary);
+    min-height: 100vh;
+  }
+
+  /* Tabular figures for numeric data */
+  .font-data {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ============================================================
+   Animation Keyframes
+   ============================================================ */
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes sheetIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes criticalPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes fadeOnly {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Entry animation classes ── */
+.modal-enter {
+  animation: modalIn var(--duration-modal) var(--ease-out) forwards;
+}
+
+.sheet-enter {
+  animation: sheetIn var(--duration-modal) var(--ease-drawer) forwards;
+}
+
+.toast-enter {
+  animation: toastIn 200ms var(--ease-out) forwards;
+}
+
+/* ── List item stagger ── */
+.list-item {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: fadeUp 200ms var(--ease-out) forwards;
+}
+.list-item:nth-child(1) { animation-delay: 0ms; }
+.list-item:nth-child(2) { animation-delay: 40ms; }
+.list-item:nth-child(3) { animation-delay: 80ms; }
+.list-item:nth-child(4) { animation-delay: 120ms; }
+.list-item:nth-child(n + 5) { animation-delay: 120ms; }
+
+/* ============================================================
+   Reduced Motion
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .toast-enter {
+    animation: fadeOnly 150ms ease forwards;
+  }
+}
+
+/* ============================================================
+   Scrollbar Styling (Dark Theme)
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-default);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-strong);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-default) var(--color-bg-base);
+}
+
+/* ============================================================
+   Utility Classes
+   ============================================================ */
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .clinical-data {
+    font-family: var(--font-data);
+    font-variant-numeric: tabular-nums;
+  }
+}

@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Turborepo
+.turbo/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Prisma generated
+prisma/generated/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# IDE files
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Docker volumes (local dev)
+docker/postgres/data/
+docker/redis/data/
+docker/localstack/data/
+docker/clamav/data/
+
+# Misc
+*.tsbuildinfo
+.eslintcache
+.prettiercache
+
+# Documents
+*.md

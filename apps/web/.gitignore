@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+dist/
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Turborepo & compiler caches
+.turbo/
+.eslintcache
+*.tsbuildinfo
