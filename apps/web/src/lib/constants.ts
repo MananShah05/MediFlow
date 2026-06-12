@@ -6,7 +6,7 @@ export const APP_DESCRIPTION =
   "A multi-tenant hospital management system built for clinical safety, speed, and compliance." as const;
 
 /** Authentication */
-export const AUTH_COOKIE_NAME = "careos_refresh" as const;
+export const AUTH_COOKIE_NAME = "mediflow_refresh" as const;
 export const ACCESS_TOKEN_EXPIRY_MS = 15 * 60 * 1000; // 15 minutes
 
 /** API */

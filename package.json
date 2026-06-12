@@ -1,5 +1,5 @@
 {
-  "name": "careos",
+  "name": "mediflow",
   "private": true,
   "scripts": {
     "dev": "turbo run dev",

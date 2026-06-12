@@ -3,7 +3,7 @@
 import { Toaster as SonnerToaster, toast } from "sonner";
 
 /**
- * CareOS Toast provider — wraps Sonner with Design.md styling.
+ * MediFLOW Toast provider — wraps Sonner with Design.md styling.
  *
  * Rules from Design.md:
  * - Enter: translateY(8px) → 0 + fade, 200ms ease-out
@@ -44,7 +44,7 @@ function ToastProvider() {
 }
 
 /** Convenience wrappers for toast types */
-const careosToast = {
+const mediflowToast = {
   success: (message: string, description?: string) =>
     toast.success(message, { description }),
 
@@ -67,4 +67,4 @@ const careosToast = {
   dismiss: (id?: string | number) => toast.dismiss(id),
 };
 
-export { ToastProvider, careosToast, toast };
+export { ToastProvider, mediflowToast, toast };

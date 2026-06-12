@@ -15,7 +15,7 @@ function isUserRole(value: string | undefined): value is UserRole {
 
 function clearAuthCookies(response: NextResponse) {
   response.cookies.delete(AUTH_COOKIE_NAME);
-  response.cookies.delete("careos_role");
+  response.cookies.delete("mediflow_role");
   return response;
 }
 
@@ -23,7 +23,7 @@ function clearAuthCookies(response: NextResponse) {
  * RoleGuard Middleware
  *
  * 1. Public routes (login, register, forgot-password, verify-email) — always accessible.
- * 2. For authenticated users, a `careos_role` cookie indicates role (set by login page client).
+ * 2. For authenticated users, a `mediflow_role` cookie indicates role (set by login page client).
  *    The refresh token cookie presence indicates a valid session.
  * 3. Authenticated users accessing wrong portal → redirect to their portal.
  * 4. Unauthenticated users accessing protected routes → redirect to /login.
@@ -44,7 +44,7 @@ export function middleware(request: NextRequest) {
 
   // Check for session — refresh token cookie presence indicates active session
   const hasSession = request.cookies.has(AUTH_COOKIE_NAME);
-  const rawRoleCookie = request.cookies.get("careos_role")?.value;
+  const rawRoleCookie = request.cookies.get("mediflow_role")?.value;
   const roleCookie = isUserRole(rawRoleCookie) ? rawRoleCookie : undefined;
 
   // Redirect unauthenticated /login and /register requests to root /

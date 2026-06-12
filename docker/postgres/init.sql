@@ -1,5 +1,5 @@
--- CareOS PostgreSQL initialization script
--- Enables required extensions for the careos_dev database
+-- MediFLOW PostgreSQL initialization script
+-- Enables required extensions for the mediflow_dev database
 
 -- UUID generation (gen_random_uuid is built-in to PG 13+, but uuid-ossp adds more functions)
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";

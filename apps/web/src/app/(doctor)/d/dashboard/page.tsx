@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
 import { useRouter } from "next/navigation";
-import { careosToast } from "@/components/ui/toast";
+import { mediflowToast } from "@/components/ui/toast";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface Appointment {
@@ -71,13 +71,13 @@ export default function DoctorDashboard() {
         chiefComplaint: appt.visitReason || "Outpatient Consultation",
       }),
     onSuccess: (res) => {
-      careosToast.success("Encounter created successfully.");
+      mediflowToast.success("Encounter created successfully.");
       queryClient.invalidateQueries({ queryKey: ["appointments"] });
       queryClient.invalidateQueries({ queryKey: ["encounters"] });
       router.push(`/d/encounters/${res.data.id}`);
     },
     onError: (err: any) => {
-      careosToast.error("Failed to create encounter", err.message);
+      mediflowToast.error("Failed to create encounter", err.message);
     },
   });
 

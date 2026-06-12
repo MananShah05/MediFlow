@@ -7,7 +7,7 @@ import { Building2, Activity, ShieldAlert, Cpu, Plus, Eye, Settings, RefreshCw, 
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
-import { careosToast } from "@/components/ui/toast";
+import { mediflowToast } from "@/components/ui/toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Modal } from "@/components/ui/modal";
 
@@ -57,7 +57,7 @@ export default function SuperAdminDashboard() {
   const healthServices = healthRes?.services;
 
   const handleProvisionTenant = () => {
-    careosToast.info("Tenant provisioning interface will open in a new dashboard view.");
+    mediflowToast.info("Tenant provisioning interface will open in a new dashboard view.");
     setIsProvisionTenantOpen(true);
   };
 
@@ -66,7 +66,7 @@ export default function SuperAdminDashboard() {
   };
 
   const handleSystemConfig = () => {
-    careosToast.info("System configuration panel is under development.");
+    mediflowToast.info("System configuration panel is under development.");
   };
 
   const isLoading = isDashLoading || isTenantsLoading;
@@ -209,7 +209,7 @@ export default function SuperAdminDashboard() {
                   <div>
                     <span className="font-bold text-text-primary">{tenant.name}</span>
                     <p className="text-text-tertiary mt-[2px]">
-                      {tenant.type.replace(/_/g, " ")} · {tenant.slug}.careos.app
+                      {tenant.type.replace(/_/g, " ")} · {tenant.slug}.mediflow.app
                       {tenant.tier && <span className="ml-1">· {tenant.tier}</span>}
                     </p>
                     <p className="text-text-tertiary mt-[2px] text-[10px]">

@@ -123,13 +123,13 @@ export class AdminService {
     const userMap = new Map(users.map((u: any) => [u.id, u.email]));
 
     const recentEvents = auditLogs.map((l: any) => {
-      const email = (userMap.get(l.userId) as string) || "system@careos.com";
+      const email = (userMap.get(l.userId) as string) || "system@mediflow.com";
       const localPart = email.split("@")[0] || "system";
       let name = localPart.split(".").map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
-      if (email === "nurse@careos.com") name = "Nurse Clara Barton";
-      else if (email === "doctor@careos.com") name = "Dr. Jane Foster";
-      else if (email === "admin@careos.com") name = "Admin Nick Fury";
-      else if (email === "superadmin@careos.com") name = "Super Admin Tony Stark";
+      if (email === "nurse@mediflow.com") name = "Nurse Clara Barton";
+      else if (email === "doctor@mediflow.com") name = "Dr. Jane Foster";
+      else if (email === "admin@mediflow.com") name = "Admin Nick Fury";
+      else if (email === "superadmin@mediflow.com") name = "Super Admin Tony Stark";
 
       return {
         id: l.id,

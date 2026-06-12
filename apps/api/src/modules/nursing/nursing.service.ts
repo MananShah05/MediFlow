@@ -260,7 +260,7 @@ export class NursingService {
         return {
           id: n.id,
           email: n.user.email,
-          name: n.user.email === "nurse@careos.com" ? "Clara Barton" : name,
+          name: n.user.email === "nurse@mediflow.com" ? "Clara Barton" : name,
         };
       }),
     };

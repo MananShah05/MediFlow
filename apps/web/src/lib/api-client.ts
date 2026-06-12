@@ -38,7 +38,7 @@ interface RequestConfig extends Omit<RequestInit, "body"> {
 
 /**
  * Extract the tenant slug from the current hostname.
- * Pattern: {tenant}.careos.app → tenant slug
+ * Pattern: {tenant}.mediflow.app → tenant slug
  * Falls back to null for localhost / single-tenant dev.
  */
 function getTenantFromHostname(): string | null {
@@ -51,7 +51,7 @@ function getTenantFromHostname(): string | null {
     return null;
   }
 
-  // Production: {tenant}.careos.app
+  // Production: {tenant}.mediflow.app
   const parts = hostname.split(".");
   if (parts.length >= 3) {
     return parts[0];

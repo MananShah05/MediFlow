@@ -1,13 +1,13 @@
 #!/bin/bash
-# CareOS LocalStack S3 initialization script
+# MediFLOW LocalStack S3 initialization script
 # Creates the default bucket used by the file storage service
 
-echo "Initializing CareOS S3 buckets..."
+echo "Initializing MediFLOW S3 buckets..."
 
-awslocal s3 mb s3://careos-files --region us-east-1
+awslocal s3 mb s3://mediflow-files --region us-east-1
 
 # Apply CORS configuration for local development
-awslocal s3api put-bucket-cors --bucket careos-files --cors-configuration '{
+awslocal s3api put-bucket-cors --bucket mediflow-files --cors-configuration '{
   "CORSRules": [
     {
       "AllowedHeaders": ["*"],
@@ -19,4 +19,4 @@ awslocal s3api put-bucket-cors --bucket careos-files --cors-configuration '{
   ]
 }'
 
-echo "CareOS S3 buckets initialized successfully."
+echo "MediFLOW S3 buckets initialized successfully."

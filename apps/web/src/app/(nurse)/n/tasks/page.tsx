@@ -6,7 +6,7 @@ import { ListTodo, CheckCircle2, AlertTriangle, AlertCircle, Clock, Search, Filt
 import { Badge } from "@/components/ui/badge";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
-import { careosToast } from "@/components/ui/toast";
+import { mediflowToast } from "@/components/ui/toast";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface NursingTask {
@@ -61,7 +61,7 @@ export default function TasksPage() {
       updated.add(taskId);
       return updated;
     });
-    careosToast.success(`Completed task: "${title}" successfully.`);
+    mediflowToast.success(`Completed task: "${title}" successfully.`);
     // We can also trigger a refetch if we want, but since we simulate, local state is perfect.
   };
 

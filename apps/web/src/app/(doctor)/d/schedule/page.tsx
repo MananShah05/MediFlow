@@ -7,7 +7,7 @@ import { Clock, ChevronLeft, ChevronRight, Calendar as CalendarIcon } from "luci
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
 import { useRouter } from "next/navigation";
-import { careosToast } from "@/components/ui/toast";
+import { mediflowToast } from "@/components/ui/toast";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface Appointment {
@@ -49,11 +49,11 @@ export default function SchedulePage() {
         status: "checked_in",
       }),
     onSuccess: () => {
-      careosToast.success("Patient checked in.");
+      mediflowToast.success("Patient checked in.");
       queryClient.invalidateQueries({ queryKey: ["appointments"] });
     },
     onError: (err: any) => {
-      careosToast.error("Check-in failed", err.message);
+      mediflowToast.error("Check-in failed", err.message);
     },
   });
 
@@ -69,13 +69,13 @@ export default function SchedulePage() {
         chiefComplaint: appt.visitReason || "Outpatient Consultation",
       }),
     onSuccess: (res) => {
-      careosToast.success("Encounter created.");
+      mediflowToast.success("Encounter created.");
       queryClient.invalidateQueries({ queryKey: ["appointments"] });
       queryClient.invalidateQueries({ queryKey: ["encounters"] });
       router.push(`/d/encounters/${res.data.id}`);
     },
     onError: (err: any) => {
-      careosToast.error("Failed to start encounter", err.message);
+      mediflowToast.error("Failed to start encounter", err.message);
     },
   });
 

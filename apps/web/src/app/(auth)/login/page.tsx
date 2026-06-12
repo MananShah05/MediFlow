@@ -85,11 +85,11 @@ export default function LoginPage() {
   return (
     <div className="bg-bg-elevated/70 backdrop-blur-xl border border-border rounded-xl p-8 shadow-2xl flex flex-col gap-6">
       <div className="flex flex-col gap-2 text-center">
-        <div className="mx-auto w-12 h-12 rounded-lg bg-clinical flex items-center justify-center text-text-inverse font-bold text-xl">
-          C
+        <div className="mx-auto w-12 h-12 rounded-lg bg-clinical flex items-center justify-center text-text-inverse font-bold text-sm tracking-tight">
+          MF
         </div>
         <h2 className="text-2xl font-semibold text-text-primary tracking-tight mt-2">
-          Welcome to CareOS
+          Welcome to MediFLOW
         </h2>
         <p className="text-sm text-text-secondary">
           Enter your credentials to access the hospital management portal

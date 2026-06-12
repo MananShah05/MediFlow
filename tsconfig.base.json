@@ -20,8 +20,8 @@
     "exactOptionalPropertyTypes": false,
     "incremental": true,
     "paths": {
-      "@careos/shared": ["./packages/shared/src"],
-      "@careos/shared/*": ["./packages/shared/src/*"]
+      "@mediflow/shared": ["./packages/shared/src"],
+      "@mediflow/shared/*": ["./packages/shared/src/*"]
     }
   },
   "exclude": ["node_modules", "dist", ".turbo"]

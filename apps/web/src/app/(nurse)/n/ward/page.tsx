@@ -6,7 +6,7 @@ import { BedDouble, Users, UserCheck, AlertCircle, Heart, Search, Filter, Refres
 import { Badge } from "@/components/ui/badge";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
-import { careosToast } from "@/components/ui/toast";
+import { mediflowToast } from "@/components/ui/toast";
 import { Modal } from "@/components/ui/modal";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -110,13 +110,13 @@ export default function WardPage() {
   const logVitalsMutation = useMutation({
     mutationFn: (body: any) => apiClient.post("/nursing/vitals", body),
     onSuccess: () => {
-      careosToast.success("Patient vitals logged successfully.");
+      mediflowToast.success("Patient vitals logged successfully.");
       queryClient.invalidateQueries({ queryKey: ["nurse", "dashboard"] });
       setIsVitalsOpen(false);
       resetVitalsForm();
     },
     onError: (err: any) => {
-      careosToast.error(err.response?.data?.error?.message || "Failed to log patient vitals.");
+      mediflowToast.error(err.response?.data?.error?.message || "Failed to log patient vitals.");
     },
   });
 
@@ -146,7 +146,7 @@ export default function WardPage() {
       setSelectedAdmission(admission);
       setIsVitalsOpen(true);
     } else {
-      careosToast.error("Active admission not found for this patient.");
+      mediflowToast.error("Active admission not found for this patient.");
     }
   };
 

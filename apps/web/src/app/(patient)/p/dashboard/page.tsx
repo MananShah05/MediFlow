@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Calendar, Shield, CreditCard, Heart, ArrowRight, Loader2, Plus } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
-import { careosToast } from "@/components/ui/toast";
+import { mediflowToast } from "@/components/ui/toast";
 import { Modal } from "@/components/ui/modal";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -142,13 +142,13 @@ export default function PatientDashboard() {
   const createAppointmentMutation = useMutation({
     mutationFn: (body: any) => apiClient.post("/appointments", body),
     onSuccess: () => {
-      careosToast.success("Appointment request submitted successfully.");
+      mediflowToast.success("Appointment request submitted successfully.");
       queryClient.invalidateQueries({ queryKey: ["patient", "dashboard"] });
       setIsAppointmentOpen(false);
       resetAppointmentForm();
     },
     onError: (err: any) => {
-      careosToast.error("Failed to request appointment", err.message);
+      mediflowToast.error("Failed to request appointment", err.message);
     },
   });
 
@@ -156,13 +156,13 @@ export default function PatientDashboard() {
   const createConsentMutation = useMutation({
     mutationFn: (body: any) => apiClient.post("/patients/me/consents", body),
     onSuccess: () => {
-      careosToast.success("Consent grant recorded successfully.");
+      mediflowToast.success("Consent grant recorded successfully.");
       queryClient.invalidateQueries({ queryKey: ["patient", "dashboard"] });
       setIsConsentOpen(false);
       resetConsentForm();
     },
     onError: (err: any) => {
-      careosToast.error("Failed to record consent", err.message);
+      mediflowToast.error("Failed to record consent", err.message);
     },
   });
 
@@ -185,7 +185,7 @@ export default function PatientDashboard() {
   const handleRequestAppointment = (e: React.FormEvent) => {
     e.preventDefault();
     if (!data?.patient.id || !selectedDoctorId || !apptDate || !apptTime) {
-      careosToast.warning("Please fill out all required fields.");
+      mediflowToast.warning("Please fill out all required fields.");
       return;
     }
 
@@ -210,7 +210,7 @@ export default function PatientDashboard() {
   const handleGrantConsent = (e: React.FormEvent) => {
     e.preventDefault();
     if (!granteeId || !consentExpiryDate || consentScopes.length === 0) {
-      careosToast.warning("Please fill out all required fields.");
+      mediflowToast.warning("Please fill out all required fields.");
       return;
     }
 

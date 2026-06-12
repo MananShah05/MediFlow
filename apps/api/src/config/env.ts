@@ -23,7 +23,7 @@ const envSchema = z.object({
     z.enum(["strict", "lax", "none"]).optional()
   ),
   S3_ENDPOINT: z.string().url().optional(),
-  S3_BUCKET: z.string().default("careos-files"),
+  S3_BUCKET: z.string().default("mediflow-files"),
   S3_ACCESS_KEY: z.string().default("test"),
   S3_SECRET_KEY: z.string().default("test"),
   S3_REGION: z.string().default("us-east-1"),

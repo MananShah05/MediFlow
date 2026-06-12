@@ -7,7 +7,7 @@ import { Plus, Search, FileText } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
 import { useRouter } from "next/navigation";
-import { careosToast } from "@/components/ui/toast";
+import { mediflowToast } from "@/components/ui/toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Modal } from "@/components/ui/modal";
 
@@ -73,7 +73,7 @@ export default function EncountersPage() {
         chiefComplaint: chiefComplaint || "Outpatient Consultation",
       }),
     onSuccess: (res) => {
-      careosToast.success("Encounter created successfully.");
+      mediflowToast.success("Encounter created successfully.");
       setIsNewModalOpen(false);
       setSelectedPatientId("");
       setChiefComplaint("");
@@ -81,7 +81,7 @@ export default function EncountersPage() {
       router.push(`/d/encounters/${res.data.id}`);
     },
     onError: (err: any) => {
-      careosToast.error("Failed to create encounter", err.message);
+      mediflowToast.error("Failed to create encounter", err.message);
     },
   });
 

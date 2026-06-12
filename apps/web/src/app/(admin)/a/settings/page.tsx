@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { useAuthStore } from "@/lib/auth";
-import { careosToast } from "@/components/ui/toast";
+import { mediflowToast } from "@/components/ui/toast";
 import { Settings, Shield, Bell, Key, Save, AlertCircle, Building2, Globe, Lock } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -18,20 +18,20 @@ export default function AdminSettingsPage() {
 
   const handleSavePreferences = (e: React.FormEvent) => {
     e.preventDefault();
-    careosToast.success("Tenant preferences saved successfully.");
+    mediflowToast.success("Tenant preferences saved successfully.");
   };
 
   const handleChangePassword = (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentPassword || !newPassword) {
-      careosToast.error("Please fill in all password fields.");
+      mediflowToast.error("Please fill in all password fields.");
       return;
     }
     if (newPassword.length < 8) {
-      careosToast.error("New password must be at least 8 characters.");
+      mediflowToast.error("New password must be at least 8 characters.");
       return;
     }
-    careosToast.success("Security credentials updated successfully.");
+    mediflowToast.success("Security credentials updated successfully.");
     setCurrentPassword("");
     setNewPassword("");
   };

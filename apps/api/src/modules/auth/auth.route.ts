@@ -5,8 +5,8 @@ import { z } from "zod";
 import { writeAuditLog } from "../../lib/audit.js";
 import { env } from "../../config/env.js";
 
-const refreshCookieName = "careos_refresh";
-const roleCookieName = "careos_role";
+const refreshCookieName = "mediflow_refresh";
+const roleCookieName = "mediflow_role";
 const sessionMaxAgeSeconds = 7 * 24 * 60 * 60;
 
 const registerPatientSchema = z
@@ -95,10 +95,10 @@ async function issueSession(fastify: FastifyInstance, reply: any, request: any, 
 
 function getStaffNames(email: string, role: string) {
   const emailLower = email.toLowerCase();
-  if (emailLower === "nurse@careos.com") return { firstName: "Clara", lastName: "Barton" };
-  if (emailLower === "doctor@careos.com") return { firstName: "Jane", lastName: "Foster" };
-  if (emailLower === "admin@careos.com") return { firstName: "Nick", lastName: "Fury" };
-  if (emailLower === "superadmin@careos.com") return { firstName: "Tony", lastName: "Stark" };
+  if (emailLower === "nurse@mediflow.com") return { firstName: "Clara", lastName: "Barton" };
+  if (emailLower === "doctor@mediflow.com") return { firstName: "Jane", lastName: "Foster" };
+  if (emailLower === "admin@mediflow.com") return { firstName: "Nick", lastName: "Fury" };
+  if (emailLower === "superadmin@mediflow.com") return { firstName: "Tony", lastName: "Stark" };
 
   const emailParts = emailLower.split("@");
   const namePart = emailParts[0] || "staff";
@@ -307,9 +307,9 @@ export async function authRoutes(fastify: FastifyInstance) {
       });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
-    if (!isPasswordValid) {
-      // Log login failure
+    // Check if account is currently locked
+    if (user.lockedUntil && user.lockedUntil > new Date()) {
+      const remainingTime = Math.ceil((user.lockedUntil.getTime() - Date.now()) / 60000);
       const primaryAssignment = user.userRoles.find((r: any) => r.isPrimary) || user.userRoles[0];
       const roleName = primaryAssignment?.role?.name || "patient";
 
@@ -323,13 +323,69 @@ export async function authRoutes(fastify: FastifyInstance) {
         ipAddress: request.ip === "::1" ? "127.0.0.1" : request.ip,
         userAgent: request.headers["user-agent"] || "unknown",
         outcome: "failure",
-        failureReason: "INVALID_PASSWORD",
+        failureReason: "ACCOUNT_LOCKED",
+      }).catch(err => {
+        fastify.log.error(err, "Failed to write audit log for locked login attempt");
+      });
+
+      return reply.status(401).send({
+        message: `Account is temporarily locked. Please try again in ${remainingTime} minute(s).`,
+      });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+    if (!isPasswordValid) {
+      // Log login failure
+      const primaryAssignment = user.userRoles.find((r: any) => r.isPrimary) || user.userRoles[0];
+      const roleName = primaryAssignment?.role?.name || "patient";
+
+      const newFailedCount = user.failedLoginCount + 1;
+      let lockedUntil: Date | null = user.lockedUntil;
+      let failureReason = "INVALID_PASSWORD";
+      let message = "Invalid email or password. Please try again.";
+
+      if (newFailedCount >= 5) {
+        lockedUntil = new Date(Date.now() + 15 * 60 * 1000); // Lock for 15 minutes
+        failureReason = "ACCOUNT_LOCKED";
+        message = "Account has been temporarily locked due to too many failed attempts. Please try again in 15 minutes.";
+      }
+
+      await fastify.prisma.user.update({
+        where: { id: user.id },
+        data: {
+          failedLoginCount: newFailedCount,
+          lockedUntil,
+        },
+      });
+
+      await writeAuditLog(fastify.prisma as any, {
+        tenantId: user.tenantId,
+        userId: user.id,
+        userRole: roleName,
+        actionType: "USER_LOGIN",
+        resourceType: "User",
+        resourceId: user.id,
+        ipAddress: request.ip === "::1" ? "127.0.0.1" : request.ip,
+        userAgent: request.headers["user-agent"] || "unknown",
+        outcome: "failure",
+        failureReason,
       }).catch(err => {
         fastify.log.error(err, "Failed to write audit log for failed login");
       });
 
       return reply.status(401).send({
-        message: "Invalid email or password. Please try again.",
+        message,
+      });
+    }
+
+    // Reset failedLoginCount and lockedUntil on success
+    if (user.failedLoginCount > 0 || user.lockedUntil !== null) {
+      await fastify.prisma.user.update({
+        where: { id: user.id },
+        data: {
+          failedLoginCount: 0,
+          lockedUntil: null,
+        },
       });
     }
 

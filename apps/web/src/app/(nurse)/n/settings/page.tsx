@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { useAuthStore } from "@/lib/auth";
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
-import { careosToast } from "@/components/ui/toast";
+import { mediflowToast } from "@/components/ui/toast";
 import { User, Shield, Bell, Settings, AlertCircle, Save, Key } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -48,16 +48,16 @@ export default function SettingsPage() {
 
   const handleSaveProfile = (e: React.FormEvent) => {
     e.preventDefault();
-    careosToast.success("Profile preferences saved successfully.");
+    mediflowToast.success("Profile preferences saved successfully.");
   };
 
   const handleChangePassword = (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentPassword || !newPassword) {
-      careosToast.error("Please fill in all password fields.");
+      mediflowToast.error("Please fill in all password fields.");
       return;
     }
-    careosToast.success("Security credentials updated successfully.");
+    mediflowToast.success("Security credentials updated successfully.");
     setCurrentPassword("");
     setNewPassword("");
   };

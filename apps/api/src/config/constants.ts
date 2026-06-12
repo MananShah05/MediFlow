@@ -1,4 +1,4 @@
-export const COOKIE_NAME = "careos_session";
+export const COOKIE_NAME = "mediflow_session";
 
 export const SHIFT_HOURS = {
   DAY: { start: 7, end: 15 },      // 07:00 - 15:00

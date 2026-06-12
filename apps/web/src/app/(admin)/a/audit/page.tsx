@@ -85,7 +85,7 @@ export default function AdminAuditPage() {
         const blobUrl = URL.createObjectURL(blob);
         const dl = document.createElement("a");
         dl.href = blobUrl;
-        dl.setAttribute("download", `careos-audit-log-${new Date().toISOString().split("T")[0]}.csv`);
+        dl.setAttribute("download", `mediflow-audit-log-${new Date().toISOString().split("T")[0]}.csv`);
         document.body.appendChild(dl);
         dl.click();
         document.body.removeChild(dl);

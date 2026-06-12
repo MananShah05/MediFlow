@@ -169,7 +169,7 @@ async function main() {
     data: {
       id: DOCTOR_USER_ID,
       tenantId: tenant.id,
-      email: "doctor@careos.com",
+      email: "doctor@mediflow.com",
       passwordHash,
       status: UserStatus.active,
     },
@@ -201,7 +201,7 @@ async function main() {
     data: {
       id: NURSE_USER_ID,
       tenantId: tenant.id,
-      email: "nurse@careos.com",
+      email: "nurse@mediflow.com",
       passwordHash,
       status: UserStatus.active,
     },
@@ -231,7 +231,7 @@ async function main() {
     data: {
       id: ADMIN_USER_ID,
       tenantId: tenant.id,
-      email: "admin@careos.com",
+      email: "admin@mediflow.com",
       passwordHash,
       status: UserStatus.active,
     },
@@ -250,7 +250,7 @@ async function main() {
     data: {
       id: SUPERADMIN_USER_ID,
       tenantId: tenant.id,
-      email: "superadmin@careos.com",
+      email: "superadmin@mediflow.com",
       passwordHash,
       status: UserStatus.active,
     },
@@ -269,7 +269,7 @@ async function main() {
     data: {
       id: PATIENT_USER_ID,
       tenantId: tenant.id,
-      email: "patient@careos.com",
+      email: "patient@mediflow.com",
       passwordHash,
       status: UserStatus.active,
     },
@@ -302,7 +302,7 @@ async function main() {
       gender: Gender.male,
       bloodGroup: BloodGroup.O_positive,
       mobileNumber: "+919876543210",
-      email: "patient@careos.com",
+      email: "patient@mediflow.com",
       address: {
         street: "71st Street",
         city: "Brooklyn",

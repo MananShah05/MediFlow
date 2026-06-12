@@ -7,7 +7,7 @@ import { BedDouble, CreditCard, ShieldAlert, Users, Shield, Plus, Key, Mail, Loc
 import { Badge } from "@/components/ui/badge";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
-import { careosToast } from "@/components/ui/toast";
+import { mediflowToast } from "@/components/ui/toast";
 import { Modal } from "@/components/ui/modal";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
@@ -59,13 +59,13 @@ export default function AdminDashboard() {
   const provisionMutation = useMutation({
     mutationFn: (body: any) => apiClient.post("/admin/staff", body),
     onSuccess: () => {
-      careosToast.success("New staff member provisioned successfully.");
+      mediflowToast.success("New staff member provisioned successfully.");
       queryClient.invalidateQueries({ queryKey: ["admin", "dashboard"] });
       setIsProvisionOpen(false);
       resetProvisionForm();
     },
     onError: (err: any) => {
-      careosToast.error(err.response?.data?.error?.message || "Failed to provision new staff member.");
+      mediflowToast.error(err.response?.data?.error?.message || "Failed to provision new staff member.");
     },
   });
 
@@ -82,7 +82,7 @@ export default function AdminDashboard() {
   const handleProvisionSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password || !firstName || !lastName) {
-      careosToast.error("Please fill in all required fields.");
+      mediflowToast.error("Please fill in all required fields.");
       return;
     }
 
@@ -278,7 +278,7 @@ export default function AdminDashboard() {
           </div>
 
           <div className="border-t border-border pt-4 mt-4 text-xs text-text-tertiary">
-            CareOS Administrative Console · Tenant ID: {user?.tenantId}
+            MediFLOW Administrative Console · Tenant ID: {user?.tenantId}
           </div>
         </Card>
       </div>
@@ -371,7 +371,7 @@ export default function AdminDashboard() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="e.g. john.doe@careos.com"
+              placeholder="e.g. john.doe@mediflow.com"
               className="flex h-10 w-full rounded-md border border-border bg-bg-muted px-3 py-2 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-role-admin"
               required
             />

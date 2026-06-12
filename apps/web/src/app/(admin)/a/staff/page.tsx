@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Modal } from "@/components/ui/modal";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
-import { careosToast } from "@/components/ui/toast";
+import { mediflowToast } from "@/components/ui/toast";
 import { useAuthStore } from "@/lib/auth";
 import {
   UserCog,
@@ -58,13 +58,13 @@ export default function AdminStaffPage() {
   const provisionMutation = useMutation({
     mutationFn: (body: any) => apiClient.post("/admin/staff", body),
     onSuccess: () => {
-      careosToast.success("New staff member provisioned successfully.");
+      mediflowToast.success("New staff member provisioned successfully.");
       queryClient.invalidateQueries({ queryKey: ["admin"] });
       setIsProvisionOpen(false);
       resetForm();
     },
     onError: (err: any) => {
-      careosToast.error(err.response?.data?.error?.message || "Failed to provision staff.");
+      mediflowToast.error(err.response?.data?.error?.message || "Failed to provision staff.");
     },
   });
 
@@ -81,7 +81,7 @@ export default function AdminStaffPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password || !firstName || !lastName) {
-      careosToast.error("Please fill in all required fields.");
+      mediflowToast.error("Please fill in all required fields.");
       return;
     }
     provisionMutation.mutate({
@@ -265,7 +265,7 @@ export default function AdminStaffPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="e.g. john.doe@careos.com"
+              placeholder="e.g. john.doe@mediflow.com"
               className="flex h-10 w-full rounded-md border border-border bg-bg-muted px-3 py-2 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-role-admin"
               required
             />

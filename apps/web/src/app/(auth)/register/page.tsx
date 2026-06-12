@@ -283,7 +283,7 @@ export default function RegisterPage() {
         />
 
         <div className="rounded-md border border-border bg-bg-muted p-3 text-xs leading-5 text-text-secondary">
-          By registering, you consent to CareOS storing this information for
+          By registering, you consent to MediFLOW storing this information for
           hospital registration, appointment, and care management workflows.
         </div>
 

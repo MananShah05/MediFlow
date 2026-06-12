@@ -122,7 +122,7 @@ export async function adminRoutes(fastify: FastifyInstance) {
 
     const csv = await service.exportAuditCsv(user.tenantId);
     reply.header("Content-Type", "text/csv; charset=utf-8");
-    reply.header("Content-Disposition", `attachment; filename="careos-audit-log-${new Date().toISOString().split("T")[0]}.csv"`);
+    reply.header("Content-Disposition", `attachment; filename="mediflow-audit-log-${new Date().toISOString().split("T")[0]}.csv"`);
     return reply.send(csv);
   });
 }

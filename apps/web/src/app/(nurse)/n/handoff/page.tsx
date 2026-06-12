@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { ArrowRightLeft, BookOpen, AlertCircle, CheckCircle2, ShieldAlert, Sparkles } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
-import { careosToast } from "@/components/ui/toast";
+import { mediflowToast } from "@/components/ui/toast";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface Nurse {
@@ -78,19 +78,19 @@ export default function HandoffPage() {
   const handoffMutation = useMutation({
     mutationFn: (body: any) => apiClient.post("/nursing/handoffs", body),
     onSuccess: () => {
-      careosToast.success("Shift handoff SBAR report submitted successfully.");
+      mediflowToast.success("Shift handoff SBAR report submitted successfully.");
       queryClient.invalidateQueries({ queryKey: ["nurse", "dashboard"] });
       setHandoffNotes("");
     },
     onError: (err: any) => {
-      careosToast.error(err.response?.data?.error?.message || "Failed to submit shift handoff.");
+      mediflowToast.error(err.response?.data?.error?.message || "Failed to submit shift handoff.");
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedWardId) {
-      careosToast.error("Please select a ward.");
+      mediflowToast.error("Please select a ward.");
       return;
     }
 

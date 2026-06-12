@@ -3,19 +3,19 @@ version: "3.9"
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: careos-postgres
+    container_name: mediflow-postgres
     restart: unless-stopped
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: careos_dev
-      POSTGRES_USER: careos
-      POSTGRES_PASSWORD: careos_dev
+      POSTGRES_DB: mediflow_dev
+      POSTGRES_USER: mediflow
+      POSTGRES_PASSWORD: mediflow_dev
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U careos -d careos_dev"]
+      test: ["CMD-SHELL", "pg_isready -U mediflow -d mediflow_dev"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -23,7 +23,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: careos-redis
+    container_name: mediflow-redis
     restart: unless-stopped
     ports:
       - "6379:6379"
@@ -39,7 +39,7 @@ services:
 
   localstack:
     image: localstack/localstack:latest
-    container_name: careos-localstack
+    container_name: mediflow-localstack
     restart: unless-stopped
     ports:
       - "4566:4566"
@@ -59,7 +59,7 @@ services:
 
   clamav:
     image: clamav/clamav:latest
-    container_name: careos-clamav
+    container_name: mediflow-clamav
     restart: unless-stopped
     ports:
       - "3310:3310"

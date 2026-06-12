@@ -7,7 +7,7 @@ import { Activity, Clock, ListTodo, Pill, Heart, Award, CheckCircle2, ChevronRig
 import { Badge } from "@/components/ui/badge";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
-import { careosToast } from "@/components/ui/toast";
+import { mediflowToast } from "@/components/ui/toast";
 import { Modal } from "@/components/ui/modal";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -159,11 +159,11 @@ export default function NurseDashboard() {
   const administerMedicationMutation = useMutation({
     mutationFn: (marId: string) => apiClient.post(`/nursing/mar/${marId}/administer`, {}),
     onSuccess: () => {
-      careosToast.success("Medication administration recorded successfully.");
+      mediflowToast.success("Medication administration recorded successfully.");
       queryClient.invalidateQueries({ queryKey: ["nurse", "dashboard"] });
     },
     onError: (err: any) => {
-      careosToast.error(err.response?.data?.error?.message || "Failed to record medication administration.");
+      mediflowToast.error(err.response?.data?.error?.message || "Failed to record medication administration.");
     },
   });
 
@@ -171,13 +171,13 @@ export default function NurseDashboard() {
   const logVitalsMutation = useMutation({
     mutationFn: (body: any) => apiClient.post("/nursing/vitals", body),
     onSuccess: () => {
-      careosToast.success("Patient vitals logged successfully.");
+      mediflowToast.success("Patient vitals logged successfully.");
       queryClient.invalidateQueries({ queryKey: ["nurse", "dashboard"] });
       setIsVitalsOpen(false);
       resetVitalsForm();
     },
     onError: (err: any) => {
-      careosToast.error(err.response?.data?.error?.message || "Failed to log patient vitals.");
+      mediflowToast.error(err.response?.data?.error?.message || "Failed to log patient vitals.");
     },
   });
 
@@ -185,13 +185,13 @@ export default function NurseDashboard() {
   const handoffMutation = useMutation({
     mutationFn: (body: any) => apiClient.post("/nursing/handoffs", body),
     onSuccess: () => {
-      careosToast.success("Shift handoff SBAR submitted successfully.");
+      mediflowToast.success("Shift handoff SBAR submitted successfully.");
       queryClient.invalidateQueries({ queryKey: ["nurse", "dashboard"] });
       setIsHandoffOpen(false);
       resetHandoffForm();
     },
     onError: (err: any) => {
-      careosToast.error(err.response?.data?.error?.message || "Failed to submit shift handoff.");
+      mediflowToast.error(err.response?.data?.error?.message || "Failed to submit shift handoff.");
     },
   });
 
@@ -219,7 +219,7 @@ export default function NurseDashboard() {
   const handleVitalsSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedAdmissionId) {
-      careosToast.error("Please select a patient.");
+      mediflowToast.error("Please select a patient.");
       return;
     }
 
@@ -249,7 +249,7 @@ export default function NurseDashboard() {
   const handleHandoffSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedWardId) {
-      careosToast.error("Please select a ward.");
+      mediflowToast.error("Please select a ward.");
       return;
     }
 

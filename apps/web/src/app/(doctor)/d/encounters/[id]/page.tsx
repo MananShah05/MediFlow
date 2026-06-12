@@ -7,7 +7,7 @@ import { apiClient } from "@/lib/api-client";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Plus, Trash2, CheckCircle, Search, Pill, FlaskConical, AlertCircle, Save } from "lucide-react";
-import { careosToast } from "@/components/ui/toast";
+import { mediflowToast } from "@/components/ui/toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Modal } from "@/components/ui/modal";
 import { useBreadcrumbOverride } from "@/lib/breadcrumb-context";
@@ -206,11 +206,11 @@ export default function EncounterDetail() {
         patientInstructions,
       }),
     onSuccess: () => {
-      careosToast.success("SOAP progress saved.");
+      mediflowToast.success("SOAP progress saved.");
       queryClient.invalidateQueries({ queryKey: ["encounters", id] });
     },
     onError: (err: any) => {
-      careosToast.error("Failed to save changes", err.message);
+      mediflowToast.error("Failed to save changes", err.message);
     },
   });
 
@@ -224,13 +224,13 @@ export default function EncounterDetail() {
         status: "active",
       }),
     onSuccess: () => {
-      careosToast.success("Diagnosis attached.");
+      mediflowToast.success("Diagnosis attached.");
       setSelectedIcd(null);
       setIcdSearch("");
       queryClient.invalidateQueries({ queryKey: ["encounters", id] });
     },
     onError: (err: any) => {
-      careosToast.error("Failed to add diagnosis", err.message);
+      mediflowToast.error("Failed to add diagnosis", err.message);
     },
   });
 
@@ -239,11 +239,11 @@ export default function EncounterDetail() {
     mutationFn: (diagId: string) =>
       apiClient.delete(`/encounters/${id}/diagnoses/${diagId}`),
     onSuccess: () => {
-      careosToast.success("Diagnosis removed.");
+      mediflowToast.success("Diagnosis removed.");
       queryClient.invalidateQueries({ queryKey: ["encounters", id] });
     },
     onError: (err: any) => {
-      careosToast.error("Failed to remove diagnosis", err.message);
+      mediflowToast.error("Failed to remove diagnosis", err.message);
     },
   });
 
@@ -251,7 +251,7 @@ export default function EncounterDetail() {
   const addPrescriptionMutation = useMutation({
     mutationFn: (rxData: any) => apiClient.post("/prescriptions", rxData),
     onSuccess: () => {
-      careosToast.success("Prescription order placed.");
+      mediflowToast.success("Prescription order placed.");
       setSelectedMedication(null);
       setRxSearch("");
       setDose("");
@@ -260,7 +260,7 @@ export default function EncounterDetail() {
       queryClient.invalidateQueries({ queryKey: ["encounters", id] });
     },
     onError: (err: any) => {
-      careosToast.error("Failed to place prescription", err.message);
+      mediflowToast.error("Failed to place prescription", err.message);
     },
   });
 
@@ -268,14 +268,14 @@ export default function EncounterDetail() {
   const addLabOrderMutation = useMutation({
     mutationFn: (labData: any) => apiClient.post("/lab-orders", labData),
     onSuccess: () => {
-      careosToast.success("Lab order placed.");
+      mediflowToast.success("Lab order placed.");
       setLabOrderItems([]);
       setLabNotes("");
       setLabTestName("");
       queryClient.invalidateQueries({ queryKey: ["encounters", id] });
     },
     onError: (err: any) => {
-      careosToast.error("Failed to place lab order", err.message);
+      mediflowToast.error("Failed to place lab order", err.message);
     },
   });
 
@@ -283,13 +283,13 @@ export default function EncounterDetail() {
   const finalizeMutation = useMutation({
     mutationFn: () => apiClient.post(`/encounters/${id}/finalize`, {}),
     onSuccess: () => {
-      careosToast.success("Encounter finalized successfully.");
+      mediflowToast.success("Encounter finalized successfully.");
       setIsFinalizeModalOpen(false);
       queryClient.invalidateQueries({ queryKey: ["encounters", id] });
       router.push("/d/encounters");
     },
     onError: (err: any) => {
-      careosToast.error("Finalization failed", err.message);
+      mediflowToast.error("Finalization failed", err.message);
     },
   });
 
@@ -325,7 +325,7 @@ export default function EncounterDetail() {
 
   const handleAddPrescriptionItem = () => {
     if (!selectedMedication || !dose || !durationDays) {
-      careosToast.warning("Fill in all prescription details.");
+      mediflowToast.warning("Fill in all prescription details.");
       return;
     }
 
@@ -359,7 +359,7 @@ export default function EncounterDetail() {
 
   const handlePlaceLabOrder = () => {
     if (labOrderItems.length === 0) {
-      careosToast.warning("Add at least one test to place a lab order.");
+      mediflowToast.warning("Add at least one test to place a lab order.");
       return;
     }
 
