@@ -33,6 +33,12 @@ export default function DoctorDashboard() {
   const user = useAuthStore((s) => s.user);
   const router = useRouter();
   const queryClient = useQueryClient();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const todayStr = new Date().toISOString().split("T")[0] || "";
 
   // 1. Fetch consultations stats
@@ -97,7 +103,7 @@ export default function DoctorDashboard() {
       <div className="bg-bg-elevated border border-border rounded-xl p-6 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-clinical/10 blur-3xl pointer-events-none" />
         <h2 className="text-2xl font-bold text-text-primary">
-          Welcome, Dr. {user?.lastName || "Practitioner"}
+          Welcome, Dr. {mounted ? (user?.lastName || "Practitioner") : "Practitioner"}
         </h2>
         <p className="text-text-secondary mt-1">
           Review your consultations, finalize draft SOAP encounter notes, and coordinate active cases.
@@ -112,7 +118,7 @@ export default function DoctorDashboard() {
           </div>
           <div>
             <p className="text-xs text-text-secondary font-medium">Consultations Today</p>
-            {isApptStatsLoading ? (
+            {!mounted || isApptStatsLoading ? (
               <Skeleton className="h-5 w-24 mt-1" />
             ) : (
               <p className="text-sm font-semibold text-text-primary mt-1">
@@ -128,7 +134,7 @@ export default function DoctorDashboard() {
           </div>
           <div>
             <p className="text-xs text-text-secondary font-medium">Draft/In-Progress SOAP</p>
-            {isEncStatsLoading ? (
+            {!mounted || isEncStatsLoading ? (
               <Skeleton className="h-5 w-24 mt-1" />
             ) : (
               <p className="text-sm font-semibold text-text-primary mt-1">
@@ -156,7 +162,7 @@ export default function DoctorDashboard() {
           </div>
           <div>
             <p className="text-xs text-text-secondary font-medium">Pending Labs</p>
-            {isLabStatsLoading ? (
+            {!mounted || isLabStatsLoading ? (
               <Skeleton className="h-5 w-24 mt-1" />
             ) : (
               <p className="text-sm font-semibold text-text-primary mt-1">
@@ -172,12 +178,12 @@ export default function DoctorDashboard() {
         <Card className="lg:col-span-2 p-6 flex flex-col gap-4 bg-bg-surface border-border">
           <div className="flex justify-between items-center">
             <h3 className="text-base font-semibold text-text-primary">Today&apos;s Schedule</h3>
-            {!isApptStatsLoading && apptStats && apptStats.scheduled > 0 && (
+            {mounted && !isApptStatsLoading && apptStats && apptStats.scheduled > 0 && (
               <Badge variant="info">Next Scheduled Appts: {apptStats.scheduled}</Badge>
             )}
           </div>
           <div className="flex flex-col gap-3">
-            {isScheduleLoading ? (
+            {!mounted || isScheduleLoading ? (
               <>
                 <Skeleton className="h-14 w-full" />
                 <Skeleton className="h-14 w-full" />
