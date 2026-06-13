@@ -69,17 +69,8 @@ export default function RootPage() {
   const [openerMuted, setOpenerMuted] = useState(true);
   const openerVideoRef = useRef<HTMLVideoElement | null>(null);
 
-  // Skip video opener if already played in this tab session
-  useEffect(() => {
-    const hasSeen = sessionStorage.getItem("mediflow_opener_seen");
-    if (hasSeen === "true") {
-      setShowOpener(false);
-    }
-  }, []);
-
   const handleDismissOpener = () => {
     setShowOpener(false);
-    sessionStorage.setItem("mediflow_opener_seen", "true");
   };
 
   useEffect(() => {
