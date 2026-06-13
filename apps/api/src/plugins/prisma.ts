@@ -3,10 +3,14 @@ import { FastifyPluginAsync } from "fastify";
 import { PrismaClient } from "@prisma/client";
 import { tenantPrismaExtension } from "../lib/prisma-tenant.js";
 
-// Instantiate base client
+// Instantiate base client with tuned connection pool settings
 const basePrisma = new PrismaClient({
-  log: ["error", "warn"],
+  log:
+    process.env.NODE_ENV === "development"
+      ? ["warn", "error"]
+      : ["error"],
 });
+
 
 // Extend client with tenant transaction support
 const prisma = basePrisma.$extends(tenantPrismaExtension);

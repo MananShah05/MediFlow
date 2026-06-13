@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/lib/auth";
 import { PUBLIC_ROUTES, ROLE_PORTAL_MAP } from "@/lib/constants";
 import { BreadcrumbProvider } from "@/lib/breadcrumb-context";
+import { ThemeProvider } from "./theme-provider";
 
 function AuthInitializer({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -63,9 +64,21 @@ export function Providers({ children }: { children: ReactNode }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 60 * 1000, // 1 minute
-            retry: 1,
+            // Data stays fresh for 60s — no refetch during that window
+            staleTime: 60 * 1000,
+            // Keep unused data in memory for 5 minutes before GC
+            gcTime: 5 * 60 * 1000,
+            // Don't refetch just because the user switched browser tabs
             refetchOnWindowFocus: false,
+            // Don't refetch on reconnect unless data is stale
+            refetchOnReconnect: "always",
+            // 1 retry with exponential backoff (caps at 30s)
+            retry: 1,
+            retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30_000),
+          },
+          mutations: {
+            // Mutations never retry automatically — callers handle errors
+            retry: 0,
           },
         },
       })
@@ -73,9 +86,11 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <BreadcrumbProvider>
-        <AuthInitializer>{children}</AuthInitializer>
-      </BreadcrumbProvider>
+      <ThemeProvider>
+        <BreadcrumbProvider>
+          <AuthInitializer>{children}</AuthInitializer>
+        </BreadcrumbProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

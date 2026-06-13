@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./src/app/**/*.{ts,tsx}",
     "./src/components/**/*.{ts,tsx}",
@@ -61,6 +62,7 @@ const config: Config = {
         /* Backward Compatibility Mappings */
         bg: {
           base: "var(--color-bg-base)",
+          surface: "var(--color-bg-surface)",
           elevated: "var(--color-bg-elevated)",
           overlay: "var(--color-bg-overlay)",
           subtle: "var(--color-bg-subtle)",

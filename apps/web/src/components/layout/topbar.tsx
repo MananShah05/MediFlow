@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useBreadcrumbOverrides } from "@/lib/breadcrumb-context";
+import { ThemeToggle } from "./theme-toggle";
 
 interface TopbarProps {
   /** Page title override. If not provided, derived from pathname. */
@@ -124,7 +125,10 @@ export function Topbar({ title, actions }: TopbarProps) {
       </div>
 
       {/* Quick Actions */}
-      {actions && <div className="flex items-center gap-3">{actions}</div>}
+      <div className="flex items-center gap-3">
+        <ThemeToggle />
+        {actions}
+      </div>
     </header>
   );
 }

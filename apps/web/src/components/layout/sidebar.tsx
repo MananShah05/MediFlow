@@ -28,6 +28,7 @@ import {
   LogOut,
   type LucideIcon,
 } from "lucide-react";
+import { LogoIcon } from "./logo";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/lib/auth";
 import type { UserRole, NavItem } from "@/lib/constants";
@@ -86,23 +87,15 @@ export function Sidebar({ role }: SidebarProps) {
       <div className="flex items-center justify-between px-4 h-14 border-b border-border-subtle shrink-0">
         {!collapsed && (
           <Link href="/" className="flex items-center gap-2">
-            <div
-              className="w-7 h-7 rounded-md flex items-center justify-center text-xs font-bold text-text-inverse"
-              style={{ backgroundColor: accentColor }}
-            >
-              C
-            </div>
+            <LogoIcon className="w-7 h-7" />
             <span className="text-base font-semibold text-text-primary">
               {APP_NAME}
             </span>
           </Link>
         )}
         {collapsed && (
-          <div
-            className="w-7 h-7 rounded-md flex items-center justify-center text-xs font-bold text-text-inverse mx-auto"
-            style={{ backgroundColor: accentColor }}
-          >
-            C
+          <div className="flex items-center justify-center mx-auto">
+            <LogoIcon className="w-7 h-7" />
           </div>
         )}
         <button

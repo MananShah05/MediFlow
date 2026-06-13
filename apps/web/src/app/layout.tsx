@@ -46,6 +46,26 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable} ${dmSans.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var saved = localStorage.getItem('theme');
+                  var theme = saved;
+                  if (theme !== 'light' && theme !== 'dark') {
+                    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    theme = prefersDark ? 'dark' : 'light';
+                  }
+                  document.documentElement.classList.add(theme);
+                  document.documentElement.setAttribute('data-theme', theme);
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-screen bg-bg-base font-ui text-text-primary antialiased">
         <Providers>
           {children}

@@ -40,8 +40,8 @@
     /* ── Text ── */
     --color-text-primary: #F0F4FF;
     --color-text-secondary: #94A8C7;
-    --color-text-tertiary: #5A7290;
-    --color-text-inverse: #0A0F1E;
+    --color-text-tertiary: #6B7F9B;
+    --color-text-inverse: #FFFFFF;
     --color-text-link: #4D96FF;
 
     /* ── Semantic — Clinical (New values) ── */
@@ -167,6 +167,97 @@
     --duration-modal: 220ms;
     --duration-stagger: 50ms;
   }
+
+  /* ── Light Theme Overrides ── */
+  html[data-theme="light"],
+  html.light {
+    /* ── Surfaces ── */
+    --color-bg-base: #F8FAFC;       /* slate-50 */
+    --color-bg-surface: #FFFFFF;    /* White */
+    --color-bg-elevated: #F1F5F9;   /* slate-100 */
+    --color-bg-subtle: #E2E8F0;     /* slate-200 */
+    /* Mappings */
+    --color-bg-overlay: var(--color-bg-elevated);
+    --color-bg-muted: var(--color-bg-base);
+
+    /* ── Borders ── */
+    --color-border: #E2E8F0;        /* slate-200 */
+    --color-border-strong: #CBD5E1; /* slate-300 */
+
+    /* ── Text ── */
+    --color-text-primary: #0F172A;    /* slate-900 */
+    --color-text-secondary: #475569;  /* slate-600 */
+    --color-text-tertiary: #64748B;   /* slate-500 */
+    --color-text-inverse: #FFFFFF;    /* White (always white for contrast on saturated elements) */
+    --color-text-link: #0057E7;
+
+    /* ── Semantic — Clinical ── */
+    --color-danger-bg: #FEF2F2;       /* red-50 */
+    --color-danger-border: #FCA5A5;   /* red-200 */
+    --color-danger-text: #991B1B;     /* red-800 */
+    --color-danger-strong: #EF4444;   /* red-500 */
+
+    --color-warning-bg: #FFFBEB;      /* amber-50 */
+    --color-warning-border: #FDE68A;  /* amber-200 */
+    --color-warning-text: #92400E;    /* amber-800 */
+    --color-warning-strong: #D97706;  /* amber-600 */
+
+    --color-success-bg: #F0FDF4;      /* green-50 */
+    --color-success-border: #BBF7D0;  /* green-200 */
+    --color-success-text: #166534;    /* green-800 */
+    --color-success-strong: #16A34A;  /* green-600 */
+
+    --color-info-bg: #F0F9FF;         /* sky-50 */
+    --color-info-border: #BAE6FD;     /* sky-200 */
+    --color-info-text: #075985;       /* sky-800 */
+    --color-info-strong: #0284C7;     /* sky-600 */
+
+    /* ── Neutral Scale ── */
+    --color-neutral-50: #0F172A;
+    --color-neutral-100: #1E293B;
+    --color-neutral-200: #334155;
+    --color-neutral-400: #64748B;
+    --color-neutral-600: #CBD5E1;
+    --color-neutral-800: #F1F5F9;
+    --color-neutral-900: #F8FAFC;
+
+    /* ── Role Accent Colors (Optimized for contrast on light mode) ── */
+    --color-role-patient: #6D28D9;     /* purple-700 */
+    --color-role-doctor: #1D4ED8;      /* blue-700 */
+    --color-role-nurse: #047857;       /* emerald-700 */
+    --color-role-admin: #0E7490;       /* cyan-700 */
+    --color-role-superadmin: #B91C1C;  /* red-700 */
+
+    /* ── Surfaces — Role-tinted headers ── */
+    --color-portal-patient-tint: rgba(109, 40, 217, 0.04);
+    --color-portal-doctor-tint: rgba(29, 79, 216, 0.04);
+    --color-portal-nurse-tint: rgba(4, 120, 87, 0.04);
+    --color-portal-admin-tint: rgba(14, 116, 144, 0.04);
+    --color-portal-superadmin-tint: rgba(185, 28, 28, 0.04);
+
+    /* ── Shadows ── */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ── Theme Transitions ── */
+  html,
+  body,
+  aside,
+  header,
+  main,
+  input,
+  select,
+  button,
+  textarea,
+  .rounded-md {
+    transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+                color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
 
   /* ── Base Reset ── */
   *,
@@ -354,3 +445,5 @@
     font-variant-numeric: tabular-nums;
   }
 }
+
+/* Force CSS rebuild compiler trigger */

@@ -130,11 +130,12 @@ async function request<T>(
       }
 
       // Retry also failed — parse error
-      const retryError = await retryResponse.json().catch(() => ({
+      const retryRawError = await retryResponse.json().catch(() => ({
         message: "Authentication failed",
         code: "AUTH_FAILED",
         statusCode: 401,
       }));
+      const retryError = retryRawError?.error ?? retryRawError;
       throw new ApiRequestError({
         message: retryError.message ?? "Authentication failed",
         code: retryError.code ?? "AUTH_FAILED",
@@ -160,11 +161,14 @@ async function request<T>(
   }
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({
+    const rawError = await response.json().catch(() => ({
       message: "An unexpected error occurred",
       code: "UNKNOWN_ERROR",
       statusCode: response.status,
     }));
+
+    // Backend wraps errors in { error: { code, message, status, ... } }
+    const error = rawError?.error ?? rawError;
 
     throw new ApiRequestError({
       message: error.message ?? "An unexpected error occurred",

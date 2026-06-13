@@ -4,6 +4,8 @@ import type { CookieSerializeOptions } from "@fastify/cookie";
 import { z } from "zod";
 import { writeAuditLog } from "../../lib/audit.js";
 import { env } from "../../config/env.js";
+import { CacheService, CacheKeys, CacheTTL } from "../../lib/cache.js";
+
 
 const refreshCookieName = "mediflow_refresh";
 const roleCookieName = "mediflow_role";
@@ -118,6 +120,8 @@ function getStaffNames(email: string, role: string) {
 }
 
 export async function authRoutes(fastify: FastifyInstance) {
+  const cache = new CacheService(fastify.redis);
+
   fastify.post(
     "/auth/register-patient",
     {
@@ -456,76 +460,102 @@ export async function authRoutes(fastify: FastifyInstance) {
       return reply.status(401).send({ message: "No refresh token" });
     }
 
-    const session = await fastify.prisma.session.findFirst({
-      where: {
-        id: refreshCookie,
-        expiresAt: { gt: new Date() },
-        invalidatedAt: null,
-      },
-      include: {
-        user: true,
-      },
-    });
+    // ── Cache hit: skip DB lookup if session is already verified ──
+    const sessionCacheKey = CacheKeys.session(refreshCookie);
+    let sessionData = await cache.get<{
+      userId: string;
+      tenantId: string;
+      role: string;
+      userEmail: string;
+      firstName: string;
+      lastName: string;
+    }>(sessionCacheKey);
 
-    if (!session || !session.user || session.user.deletedAt) {
-      clearAuthCookies(reply);
-      return reply.status(401).send({ message: "Invalid or expired session" });
-    }
-
-    // Update session last active time
-    await fastify.prisma.session.update({
-      where: { id: session.id },
-      data: { lastActiveAt: new Date() },
-    });
-
-    const roleName = session.role;
-
-    // Determine user name
-    let firstName = "User";
-    let lastName = "Name";
-    if (roleName === "patient") {
-      const patient = await fastify.prisma.patient.findFirst({
-        where: { userId: session.userId },
-        include: { profile: true },
+    if (!sessionData) {
+      // Cache miss — validate against DB
+      const session = await fastify.prisma.session.findFirst({
+        where: {
+          id: refreshCookie,
+          expiresAt: { gt: new Date() },
+          invalidatedAt: null,
+        },
+        include: { user: true },
       });
-      if (patient?.profile) {
-        const parts = patient.profile.fullName.split(" ");
-        firstName = parts[0] || "Patient";
-        lastName = parts.slice(1).join(" ") || "Patient";
+
+      if (!session || !session.user || session.user.deletedAt) {
+        clearAuthCookies(reply);
+        return reply.status(401).send({ message: "Invalid or expired session" });
       }
-    } else {
-      const staffNames = getStaffNames(session.user.email, roleName);
-      firstName = staffNames.firstName;
-      lastName = staffNames.lastName;
+
+      // Update last active time (fire-and-forget)
+      fastify.prisma.session.update({
+        where: { id: session.id },
+        data: { lastActiveAt: new Date() },
+      }).catch(() => {});
+
+      const roleName = session.role;
+      let firstName = "User";
+      let lastName = "Name";
+      if (roleName === "patient") {
+        const patient = await fastify.prisma.patient.findFirst({
+          where: { userId: session.userId },
+          include: { profile: true },
+        });
+        if (patient?.profile) {
+          const parts = patient.profile.fullName.split(" ");
+          firstName = parts[0] || "Patient";
+          lastName = parts.slice(1).join(" ") || "Patient";
+        }
+      } else {
+        const staffNames = getStaffNames(session.user.email, roleName);
+        firstName = staffNames.firstName;
+        lastName = staffNames.lastName;
+      }
+
+      sessionData = {
+        userId: session.userId,
+        tenantId: session.tenantId,
+        role: roleName,
+        userEmail: session.user.email,
+        firstName,
+        lastName,
+      };
+
+      // Cache for future refreshes
+      await cache.set(sessionCacheKey, sessionData, CacheTTL.session);
     }
 
     const accessToken = fastify.jwt.sign({
-      userId: session.userId,
-      tenantId: session.tenantId,
-      role: roleName,
-      sessionId: session.id,
+      userId: sessionData.userId,
+      tenantId: sessionData.tenantId,
+      role: sessionData.role,
+      sessionId: refreshCookie,
     });
 
-    reply.setCookie(refreshCookieName, session.id, getCookieOptions(true));
-    reply.setCookie(roleCookieName, roleName, getCookieOptions(false));
+    reply.setCookie(refreshCookieName, refreshCookie, getCookieOptions(true));
+    reply.setCookie(roleCookieName, sessionData.role, getCookieOptions(false));
 
     return {
       accessToken,
       user: {
-        id: session.user.id,
-        email: session.user.email,
-        firstName,
-        lastName,
-        role: roleName,
-        tenantId: session.tenantId,
+        id: sessionData.userId,
+        email: sessionData.userEmail,
+        firstName: sessionData.firstName,
+        lastName: sessionData.lastName,
+        role: sessionData.role,
+        tenantId: sessionData.tenantId,
       },
     };
   });
+
 
   fastify.post("/auth/logout", async (request, reply) => {
     const refreshCookie = request.cookies[refreshCookieName];
 
     if (refreshCookie) {
+      // Invalidate session cache immediately
+      await cache.del(CacheKeys.session(refreshCookie));
+
       // Invalidate session in DB
       await fastify.prisma.session.updateMany({
         where: { id: refreshCookie },
@@ -542,3 +572,4 @@ export async function authRoutes(fastify: FastifyInstance) {
     return { success: true };
   });
 }
+

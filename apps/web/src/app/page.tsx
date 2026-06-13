@@ -7,10 +7,11 @@ import { DM_Serif_Display, Inter } from "next/font/google";
 import { useAuthStore } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Shield, Heart, Activity, Check, Users, Sparkles, Loader2, ArrowRight, Lock } from "lucide-react";
+import { Shield, Heart, Activity, Check, Users, Sparkles, Loader2, ArrowRight, Lock, Play, X, Twitter, Facebook, Instagram, Linkedin, Github } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion, type Variants } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { useRef } from "react";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 const serif = DM_Serif_Display({
   weight: "400",
@@ -53,6 +54,8 @@ const statsVariants: Variants = {
 export default function RootPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+
   const login = useAuthStore((s) => s.login);
   const registerPatient = useAuthStore((s) => s.registerPatient);
 
@@ -62,6 +65,8 @@ export default function RootPage() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const targetMouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+
+
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -385,8 +390,8 @@ export default function RootPage() {
       )}
       style={{ fontFamily: "var(--font-sans), system-ui, sans-serif" }}
     >
-      {/* === HERO DARK SECTION === */}
-      <div className="relative bg-[#0F1117] text-white overflow-hidden min-h-screen flex flex-col justify-between">
+      {/* === HERO SECTION === */}
+      <div className="relative bg-slate-50 dark:bg-[#0F1117] text-slate-900 dark:text-white overflow-hidden min-h-screen flex flex-col justify-between">
         {/* Glowing waves canvas background */}
         <canvas
           ref={canvasRef}
@@ -401,32 +406,33 @@ export default function RootPage() {
         </div>
 
         {/* Header */}
-        <header className="relative z-20 w-full max-w-7xl mx-auto px-6 h-20 flex items-center justify-between border-b border-white/[0.06]">
+        <header className="relative z-20 w-full max-w-7xl mx-auto px-6 h-20 flex items-center justify-between border-b border-slate-200 dark:border-white/[0.06]">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7DD3C0] to-[#4A90D9] flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-[#7DD3C0]/20">
               M
             </div>
             <span
-              className="font-semibold text-lg tracking-tight text-white/90"
+              className="font-semibold text-lg tracking-tight text-slate-900 dark:text-white/90"
               style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
             >
               MediFLOW
             </span>
           </div>
 
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-white/40">
-            <a href="#features" className="hover:text-white/80 transition-colors duration-200">
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-slate-400">
+            <a href="#features" className="hover:text-slate-900 dark:hover:text-white transition-colors duration-200">
               Platform
             </a>
-            <a href="#compliance" className="hover:text-white/80 transition-colors duration-200">
+            <a href="#compliance" className="hover:text-slate-900 dark:hover:text-white transition-colors duration-200">
               Security
             </a>
-            <a href="#statistics" className="hover:text-white/80 transition-colors duration-200">
+            <a href="#statistics" className="hover:text-slate-900 dark:hover:text-white transition-colors duration-200">
               Impact
             </a>
           </nav>
 
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <button
               onClick={() => {
                 setPortal("patient");
@@ -434,7 +440,7 @@ export default function RootPage() {
                 const el = document.getElementById("auth-card");
                 el?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors duration-200"
+              className="flex-shrink-0 text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors duration-200"
             >
               Sign In
             </button>
@@ -445,7 +451,7 @@ export default function RootPage() {
                 const el = document.getElementById("auth-card");
                 el?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="text-sm font-semibold bg-white text-[#0F1117] hover:bg-white/90 px-5 py-2 rounded-full transition-all duration-200 shadow-lg shadow-white/10"
+              className="flex-shrink-0 text-sm font-semibold bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-[#0F1117] dark:hover:bg-white/90 px-5 py-2 rounded-full transition-all duration-200 shadow-md dark:shadow-lg dark:shadow-white/10"
             >
               Get Started
             </button>
@@ -465,7 +471,7 @@ export default function RootPage() {
               {/* Badge */}
               <motion.div
                 variants={itemVariants}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-[#7DD3C0]/20 to-[#4A90D9]/20 border border-[#7DD3C0]/20 text-xs font-medium text-[#7DD3C0] mb-6"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50/80 dark:bg-transparent border border-teal-200 dark:border-[#7DD3C0]/20 text-teal-800 dark:text-[#7DD3C0] mb-6 bg-none dark:bg-gradient-to-r dark:from-[#7DD3C0]/20 dark:to-[#4A90D9]/20 text-xs font-medium"
               >
                 <Sparkles className="w-3 h-3 animate-pulse" />
                 <span>MediFLOW 2.0 — Intelligent Care Platform</span>
@@ -473,43 +479,44 @@ export default function RootPage() {
 
               <motion.h1
                 variants={itemVariants}
-                className="text-4xl sm:text-5xl lg:text-6xl text-white leading-[1.1] tracking-tight font-medium"
+                className="text-4xl sm:text-5xl lg:text-6xl text-slate-900 dark:text-white leading-[1.1] tracking-tight font-medium"
                 style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
               >
                 The operating system
                 <br />
                 for{" "}
-                <span className="bg-gradient-to-r from-[#7DD3C0] via-[#8AB4F8] to-[#4A90D9] bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-teal-700 via-blue-600 to-indigo-600 dark:from-[#7DD3C0] dark:via-[#8AB4F8] dark:to-[#4A90D9] bg-clip-text text-transparent">
                   modern healthcare
                 </span>
               </motion.h1>
 
               <motion.p
                 variants={itemVariants}
-                className="mt-6 text-base sm:text-lg text-white/50 leading-relaxed max-w-xl font-light"
+                className="mt-6 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-xl font-light"
               >
                 A multi-tenant clinical management suite designed for the pace of modern hospitals.
                 Unify EHR, vitals, billing, and compliance on one elegant ledger.
               </motion.p>
 
-              {/* Action Button */}
-              <motion.div variants={itemVariants} className="mt-8">
+              {/* Action Buttons */}
+              <motion.div variants={itemVariants} className="mt-8 flex flex-wrap gap-4 items-center">
                 <button
                   onClick={() => {
                     const el = document.getElementById("features");
                     el?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="h-10 px-6 rounded-full border border-white/10 hover:border-white/25 text-white/80 hover:text-white hover:bg-white/5 font-medium text-xs transition-all duration-200 flex items-center gap-2"
+                  className="h-10 px-6 rounded-full border border-slate-200 hover:border-slate-300 text-slate-700 hover:text-slate-900 hover:bg-slate-50 dark:border-white/10 dark:hover:border-white/25 dark:text-white/80 dark:hover:text-white dark:hover:bg-white/5 font-medium text-xs transition-all duration-200 flex items-center gap-2"
                 >
                   Explore Capabilities
                   <ArrowRight className="w-4 h-4" />
                 </button>
+
               </motion.div>
 
               {/* Stats */}
               <motion.div
                 variants={statsVariants}
-                className="mt-12 grid grid-cols-3 gap-6 w-full max-w-md border-t border-white/[0.06] pt-8"
+                className="mt-12 grid grid-cols-3 gap-6 w-full max-w-md border-t border-slate-200 dark:border-white/[0.06] pt-8"
               >
                 {[
                   { value: "99.99%", label: "Uptime SLA" },
@@ -518,17 +525,19 @@ export default function RootPage() {
                 ].map((stat) => (
                   <motion.div key={stat.label} variants={itemVariants}>
                     <p
-                      className="text-2xl sm:text-3xl text-white/90 tracking-tight"
+                      className="text-2xl sm:text-3xl text-slate-900 dark:text-white/90 tracking-tight"
                       style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
                     >
                       {stat.value}
                     </p>
-                    <p className="text-[10px] text-white/35 mt-0.5 font-medium uppercase tracking-wider">
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 font-medium uppercase tracking-wider">
                       {stat.label}
                     </p>
                   </motion.div>
                 ))}
               </motion.div>
+
+
             </motion.div>
 
             {/* Right: Auth Card */}
@@ -540,9 +549,9 @@ export default function RootPage() {
             >
               <div id="auth-card" className="w-full max-w-md relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#7DD3C0]/10 via-transparent to-[#4A90D9]/10 rounded-3xl blur-3xl pointer-events-none" />
-                <div className="relative bg-white border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-2xl flex flex-col gap-5 text-[#0A0A0A]">
+                <div className="relative bg-surface border border-[#E5E7EB] dark:border-border rounded-2xl p-6 sm:p-8 shadow-2xl dark:shadow-none flex flex-col gap-5 text-slate-900 dark:text-white">
                   {/* Portal selector */}
-                  <div className="flex bg-[#F9FAFB] p-1 rounded-xl border border-[#E5E7EB]">
+                  <div className="flex bg-[#F9FAFB] dark:bg-bg-base p-1 rounded-xl border border-[#E5E7EB] dark:border-border">
                     <button
                       type="button"
                       onClick={() => {
@@ -553,8 +562,8 @@ export default function RootPage() {
                       className={cn(
                         "flex-1 py-2 rounded-lg text-xs font-bold transition-all duration-200",
                         portal === "patient"
-                          ? "bg-white text-[#0F1117] shadow-sm border border-[#E5E7EB]"
-                          : "text-[#6B7280] hover:text-[#0F1117]"
+                          ? "bg-surface text-[#0F1117] dark:text-white shadow-sm border border-[#E5E7EB] dark:border-border"
+                          : "text-[#6B7280] hover:text-[#0F1117] dark:text-[#94A8C7] dark:hover:text-white"
                       )}
                     >
                       Patient Portal
@@ -569,8 +578,8 @@ export default function RootPage() {
                       className={cn(
                         "flex-1 py-2 rounded-lg text-xs font-bold transition-all duration-200",
                         portal === "staff"
-                          ? "bg-white text-[#0F1117] shadow-sm border border-[#E5E7EB]"
-                          : "text-[#6B7280] hover:text-[#0F1117]"
+                          ? "bg-surface text-[#0F1117] dark:text-white shadow-sm border border-[#E5E7EB] dark:border-border"
+                          : "text-[#6B7280] hover:text-[#0F1117] dark:text-[#94A8C7] dark:hover:text-white"
                       )}
                     >
                       Staff Portal
@@ -579,7 +588,7 @@ export default function RootPage() {
 
                   {/* Sub tabs */}
                   {portal === "patient" ? (
-                    <div className="flex bg-[#F9FAFB] p-[3px] rounded-lg border border-[#E5E7EB]">
+                    <div className="flex bg-[#F9FAFB] dark:bg-bg-base p-[3px] rounded-lg border border-[#E5E7EB] dark:border-border">
                       <button
                         type="button"
                         onClick={() => {
@@ -589,8 +598,8 @@ export default function RootPage() {
                         className={cn(
                           "flex-1 py-1.5 rounded-md text-xs font-semibold transition-all duration-200",
                           activeTab === "login"
-                            ? "bg-white text-[#0F1117] shadow-sm"
-                            : "text-[#6B7280] hover:text-[#0F1117]"
+                            ? "bg-surface text-[#0F1117] dark:text-white shadow-sm"
+                            : "text-[#6B7280] hover:text-[#0F1117] dark:text-[#94A8C7] dark:hover:text-white"
                         )}
                       >
                         Sign In
@@ -604,15 +613,15 @@ export default function RootPage() {
                         className={cn(
                           "flex-1 py-1.5 rounded-md text-xs font-semibold transition-all duration-200",
                           activeTab === "register"
-                            ? "bg-white text-[#0F1117] shadow-sm"
-                            : "text-[#6B7280] hover:text-[#0F1117]"
+                            ? "bg-surface text-[#0F1117] dark:text-white shadow-sm"
+                            : "text-[#6B7280] hover:text-[#0F1117] dark:text-[#94A8C7] dark:hover:text-white"
                         )}
                       >
                         Create Account
                       </button>
                     </div>
                   ) : (
-                    <div className="flex bg-[#F9FAFB] p-[3px] rounded-lg border border-[#E5E7EB]">
+                    <div className="flex bg-[#F9FAFB] dark:bg-bg-base p-[3px] rounded-lg border border-[#E5E7EB] dark:border-border">
                       {(["doctor", "nurse", "admin"] as const).map((role) => (
                         <button
                           key={role}
@@ -624,8 +633,8 @@ export default function RootPage() {
                           className={cn(
                             "flex-1 py-1.5 rounded-md text-xs font-semibold transition-all duration-200 capitalize",
                             staffRole === role
-                              ? "bg-white text-[#0F1117] shadow-sm"
-                              : "text-[#6B7280] hover:text-[#0F1117]"
+                              ? "bg-surface text-[#0F1117] dark:text-white shadow-sm"
+                              : "text-[#6B7280] hover:text-[#0F1117] dark:text-[#94A8C7] dark:hover:text-white"
                           )}
                         >
                           {role}
@@ -635,7 +644,7 @@ export default function RootPage() {
                   )}
 
                   {authError && (
-                    <div className="bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg p-3 flex items-start gap-2" role="alert">
+                    <div className="bg-danger-bg border border-danger-border text-danger-text text-xs rounded-lg p-3 flex items-start gap-2" role="alert">
                       <span className="font-bold mt-0.5">⚠</span>
                       <span>{authError}</span>
                     </div>
@@ -644,8 +653,8 @@ export default function RootPage() {
                   {portal === "patient" && activeTab === "login" && (
                     <form onSubmit={handleLoginSubmit} className="flex flex-col gap-4">
                       <div className="flex flex-col gap-0.5 text-left">
-                        <h2 className="text-base font-bold text-[#0F1117]">Patient Sign In</h2>
-                        <p className="text-xs text-[#6B7280]">View your vitals, appointments, and bills</p>
+                        <h2 className="text-base font-bold text-slate-900 dark:text-white">Patient Sign In</h2>
+                        <p className="text-xs text-slate-500 dark:text-[#94A8C7]">View your vitals, appointments, and bills</p>
                       </div>
 
                       <Input
@@ -671,7 +680,7 @@ export default function RootPage() {
                         type="submit"
                         variant="primary"
                         size="md"
-                        className="w-full mt-1 bg-[#0F1117] text-white hover:bg-[#1F2128] rounded-lg font-semibold h-10"
+                        className="w-full mt-1 bg-clinical text-text-inverse hover:bg-clinical-hover rounded-lg font-semibold h-10"
                         disabled={loading}
                       >
                         {loading ? (
@@ -689,8 +698,8 @@ export default function RootPage() {
                   {portal === "patient" && activeTab === "register" && (
                     <form onSubmit={handleRegisterSubmit} className="flex flex-col gap-3 max-h-[350px] overflow-y-auto pr-1">
                       <div className="flex flex-col gap-0.5 text-left">
-                        <h2 className="text-base font-bold text-[#0F1117]">New Patient Registration</h2>
-                        <p className="text-xs text-[#6B7280]">Create a quick patient profile for City Hospital</p>
+                        <h2 className="text-base font-bold text-slate-900 dark:text-white">New Patient Registration</h2>
+                        <p className="text-xs text-slate-500 dark:text-[#94A8C7]">Create a quick patient profile for City Hospital</p>
                       </div>
 
                       <Input
@@ -712,9 +721,9 @@ export default function RootPage() {
                           disabled={loading}
                         />
                         <div className="flex flex-col gap-[6px]">
-                          <label className="text-xs font-semibold text-[#6B7280]">Gender *</label>
+                          <label className="text-xs font-semibold text-text-secondary">Gender *</label>
                           <select
-                            className="flex h-10 w-full rounded-lg border border-[#E5E7EB] bg-white px-3 py-2 text-sm text-[#0F1117] outline-none focus:border-[#4A90D9] focus:ring-1 focus:ring-[#4A90D9]/20 disabled:cursor-not-allowed appearance-none"
+                            className="flex h-10 w-full rounded-md border border-border bg-bg-muted px-3 py-2 text-sm text-text-primary outline-none focus:border-clinical focus:ring-2 focus:ring-clinical/20 disabled:cursor-not-allowed appearance-none"
                             value={regGender}
                             onChange={(e) => setRegGender(e.target.value as any)}
                             disabled={loading}
@@ -762,7 +771,7 @@ export default function RootPage() {
                         type="submit"
                         variant="primary"
                         size="md"
-                        className="w-full mt-1 bg-[#0F1117] text-white hover:bg-[#1F2128] rounded-lg font-semibold h-10"
+                        className="w-full mt-1 bg-clinical text-text-inverse hover:bg-clinical-hover rounded-lg font-semibold h-10"
                         disabled={loading}
                       >
                         {loading ? (
@@ -780,12 +789,12 @@ export default function RootPage() {
                   {portal === "staff" && (
                     <form onSubmit={handleLoginSubmit} className="flex flex-col gap-4">
                       <div className="flex flex-col gap-0.5 text-left">
-                        <h2 className="text-base font-bold text-[#0F1117]">
+                        <h2 className="text-base font-bold text-slate-900 dark:text-white">
                           {staffRole === "doctor" && "Doctor Console"}
                           {staffRole === "nurse" && "Nursing Station"}
                           {staffRole === "admin" && "Administrative Portal"}
                         </h2>
-                        <p className="text-xs text-[#6B7280]">
+                        <p className="text-xs text-slate-500 dark:text-[#94A8C7]">
                           {staffRole === "doctor" && "Review outpatient schedules and write draft SOAP notes."}
                           {staffRole === "nurse" && "Access bed occupancy grids, drug logs, and log patient vitals."}
                           {staffRole === "admin" && "Configure multi-tenant compliance, manage staff, and audit logs."}
@@ -821,7 +830,7 @@ export default function RootPage() {
                         type="submit"
                         variant="primary"
                         size="md"
-                        className="w-full mt-1 bg-[#0F1117] text-white hover:bg-[#1F2128] rounded-lg font-semibold h-10"
+                        className="w-full mt-1 bg-clinical text-text-inverse hover:bg-clinical-hover rounded-lg font-semibold h-10"
                         disabled={loading}
                       >
                         {loading ? (
@@ -834,7 +843,7 @@ export default function RootPage() {
                         )}
                       </Button>
 
-                      <p className="text-[10px] text-[#9CA3AF] leading-normal border-t border-[#E5E7EB] pt-3 flex items-center gap-1.5">
+                      <p className="text-[10px] text-text-secondary leading-normal border-t border-border pt-3 flex items-center gap-1.5">
                         <Lock className="w-3 h-3 flex-shrink-0" />
                         Self-registration is restricted. Staff credentials must be provisioned by the hospital administrator.
                       </p>
@@ -842,8 +851,8 @@ export default function RootPage() {
                   )}
 
                   {/* Demo quick-fill */}
-                  <div className="border-t border-[#E5E7EB] pt-3 flex flex-col gap-2">
-                    <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">Demo Accounts</span>
+                  <div className="border-t border-border pt-3 flex flex-col gap-2">
+                    <span className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">Demo Accounts</span>
                     <div className="flex flex-wrap gap-1.5">
                       {portal === "patient" ? (
                         <button
@@ -852,7 +861,7 @@ export default function RootPage() {
                             setLoginEmail("patient@mediflow.com");
                             setLoginPassword("password123");
                           }}
-                          className="px-2.5 py-1 bg-[#7DD3C0]/10 hover:bg-[#7DD3C0]/20 text-[#2D6B5D] text-[10px] font-bold rounded border border-[#7DD3C0]/20 transition-colors"
+                          className="px-2.5 py-1 bg-[#7DD3C0]/10 hover:bg-[#7DD3C0]/20 text-teal-700 dark:text-[#7DD3C0] text-[10px] font-bold rounded border border-teal-200 dark:border-[#7DD3C0]/20 transition-colors"
                         >
                           Patient Demo
                         </button>
@@ -865,7 +874,7 @@ export default function RootPage() {
                                 setLoginEmail("doctor@mediflow.com");
                                 setLoginPassword("password123");
                               }}
-                              className="px-2.5 py-1 bg-[#4A90D9]/10 hover:bg-[#4A90D9]/20 text-[#2563EB] text-[10px] font-bold rounded border border-[#4A90D9]/20 transition-colors"
+                              className="px-2.5 py-1 bg-[#4A90D9]/10 hover:bg-[#4A90D9]/20 text-blue-700 dark:text-[#8AB4F8] text-[10px] font-bold rounded border border-blue-200 dark:border-[#8AB4F8]/20 transition-colors"
                             >
                               Doctor Demo
                             </button>
@@ -877,7 +886,7 @@ export default function RootPage() {
                                 setLoginEmail("nurse@mediflow.com");
                                 setLoginPassword("password123");
                               }}
-                              className="px-2.5 py-1 bg-[#F5A623]/10 hover:bg-[#F5A623]/20 text-[#B45309] text-[10px] font-bold rounded border border-[#F5A623]/20 transition-colors"
+                              className="px-2.5 py-1 bg-[#F5A623]/10 hover:bg-[#F5A623]/20 text-amber-700 dark:text-[#F5A623] text-[10px] font-bold rounded border border-amber-200 dark:border-[#F5A623]/20 transition-colors"
                             >
                               Nurse Demo
                             </button>
@@ -889,7 +898,7 @@ export default function RootPage() {
                                 setLoginEmail("admin@mediflow.com");
                                 setLoginPassword("password123");
                               }}
-                              className="px-2.5 py-1 bg-[#6B7280]/10 hover:bg-[#6B7280]/20 text-[#4B5563] text-[10px] font-bold rounded border border-[#6B7280]/20 transition-colors"
+                              className="px-2.5 py-1 bg-[#6B7280]/10 hover:bg-[#6B7280]/20 text-slate-700 dark:text-[#94A8C7] text-[10px] font-bold rounded border border-slate-200 dark:border-[#6B7280]/20 transition-colors"
                             >
                               Admin Demo
                             </button>
@@ -906,21 +915,21 @@ export default function RootPage() {
       </div>
 
       {/* === FEATURES SECTION === */}
-      <div className="w-full bg-[#F9FAFB] border-t border-[#E5E7EB]" id="features">
+      <div className="w-full bg-[#F9FAFB] dark:bg-bg-base border-t border-[#E5E7EB] dark:border-border" id="features">
         <div className="max-w-7xl mx-auto px-6 py-20 lg:py-24">
           {/* Section label */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#7DD3C0]/10 border border-[#7DD3C0]/15 text-xs font-semibold text-[#2D6B5D] mb-4">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 dark:bg-[#7DD3C0]/10 border border-teal-200 dark:border-[#7DD3C0]/15 text-xs font-semibold text-teal-800 dark:text-[#7DD3C0] mb-4">
               <Activity className="w-3 h-3" />
               <span>Platform Capabilities</span>
             </div>
             <h2
-              className="text-3xl sm:text-4xl text-[#0F1117] tracking-tight font-medium"
+              className="text-3xl sm:text-4xl text-slate-900 dark:text-white tracking-tight font-medium"
               style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
             >
               Everything you need to run a hospital
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-[#6B7280] max-w-xl mx-auto">
+            <p className="mt-3 text-sm sm:text-base text-slate-500 dark:text-[#94A8C7] max-w-xl mx-auto">
               From outpatient scheduling to inpatient bed management — all on a compliant, unified platform.
             </p>
           </div>
@@ -955,7 +964,7 @@ export default function RootPage() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="bg-white rounded-xl border border-[#E5E7EB] p-6 hover:border-[#D1D5DB] hover:shadow-md transition-all duration-200 flex flex-col items-start"
+                className="bg-surface rounded-xl border border-[#E5E7EB] dark:border-border p-6 hover:border-slate-300 dark:hover:border-border-strong hover:shadow-md transition-all duration-200 flex flex-col items-start"
               >
                 <div
                   className={cn(
@@ -965,8 +974,8 @@ export default function RootPage() {
                 >
                   {item.icon}
                 </div>
-                <h3 className="text-sm font-semibold text-[#0F1117]">{item.title}</h3>
-                <p className="text-sm text-[#6B7280] mt-2 leading-relaxed font-light">{item.desc}</p>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white">{item.title}</h3>
+                <p className="text-sm text-slate-500 dark:text-[#94A8C7] mt-2 leading-relaxed font-light">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -974,27 +983,48 @@ export default function RootPage() {
       </div>
 
       {/* === FOOTER === */}
-      <footer className="bg-[#F9FAFB] border-t border-[#E5E7EB]">
-        <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between text-xs text-[#6B7280] gap-4">
-          <div className="flex items-center gap-2">
-            <span style={{ fontFamily: "var(--font-serif), Georgia, serif" }} className="text-sm font-medium text-[#0F1117]">
-              MediFLOW
-            </span>
-            <span className="text-[#9CA3AF]">© {new Date().getFullYear()}</span>
+      <footer className="bg-[#F9FAFB] dark:bg-bg-base border-t border-[#E5E7EB] dark:border-border">
+        <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-[#94A8C7] gap-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-2">
+            <div className="flex items-center gap-2">
+              <span style={{ fontFamily: "var(--font-serif), Georgia, serif" }} className="text-sm font-medium text-slate-900 dark:text-white">
+                MediFLOW
+              </span>
+              <span className="text-slate-400 dark:text-slate-400">© {new Date().getFullYear()}</span>
+            </div>
+            <div className="flex items-center gap-4 sm:ml-4">
+              <a href="#" className="text-slate-400 dark:text-[#94A8C7] hover:text-slate-900 dark:hover:text-white transition-colors" aria-label="Twitter">
+                <Twitter className="w-4 h-4" />
+              </a>
+              <a href="#" className="text-slate-400 dark:text-[#94A8C7] hover:text-slate-900 dark:hover:text-white transition-colors" aria-label="Facebook">
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a href="#" className="text-slate-400 dark:text-[#94A8C7] hover:text-slate-900 dark:hover:text-white transition-colors" aria-label="Instagram">
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a href="#" className="text-slate-400 dark:text-[#94A8C7] hover:text-slate-900 dark:hover:text-white transition-colors" aria-label="LinkedIn">
+                <Linkedin className="w-4 h-4" />
+              </a>
+              <a href="#" className="text-slate-400 dark:text-[#94A8C7] hover:text-slate-900 dark:hover:text-white transition-colors" aria-label="GitHub">
+                <Github className="w-4 h-4" />
+              </a>
+            </div>
           </div>
           <div className="flex items-center gap-8">
-            <a href="#" className="hover:text-[#0F1117] transition-colors">
+            <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">
               Privacy Policy
             </a>
-            <a href="#" className="hover:text-[#0F1117] transition-colors">
+            <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">
               Terms of Service
             </a>
-            <a href="#" className="hover:text-[#0F1117] transition-colors">
+            <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">
               HIPAA Statement
             </a>
           </div>
         </div>
       </footer>
+
+
     </div>
   );
 }
