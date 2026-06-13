@@ -1,16 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DM_Serif_Display, Inter } from "next/font/google";
 import { useAuthStore } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Shield, Heart, Activity, Check, Users, Sparkles, Loader2, ArrowRight, Lock, Play, X, Twitter, Facebook, Instagram, Linkedin, Github } from "lucide-react";
+import { Shield, Heart, Activity, Check, Users, Sparkles, Loader2, ArrowRight, Lock, Play, X, Volume2, VolumeX, Twitter, Facebook, Instagram, Linkedin, Github } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
-import { useRef } from "react";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 const serif = DM_Serif_Display({
@@ -55,7 +54,6 @@ export default function RootPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-
   const login = useAuthStore((s) => s.login);
   const registerPatient = useAuthStore((s) => s.registerPatient);
 
@@ -65,8 +63,24 @@ export default function RootPage() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const targetMouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  
+  // Opener State
+  const [showOpener, setShowOpener] = useState(true);
+  const [openerMuted, setOpenerMuted] = useState(true);
+  const openerVideoRef = useRef<HTMLVideoElement | null>(null);
 
+  // Skip video opener if already played in this tab session
+  useEffect(() => {
+    const hasSeen = sessionStorage.getItem("mediflow_opener_seen");
+    if (hasSeen === "true") {
+      setShowOpener(false);
+    }
+  }, []);
 
+  const handleDismissOpener = () => {
+    setShowOpener(false);
+    sessionStorage.setItem("mediflow_opener_seen", "true");
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -390,6 +404,128 @@ export default function RootPage() {
       )}
       style={{ fontFamily: "var(--font-sans), system-ui, sans-serif" }}
     >
+      {/* === CINEMATIC VIDEO OPENER === */}
+      <AnimatePresence>
+        {showOpener && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{
+              opacity: 0,
+              scale: 1.05,
+              filter: "blur(8px)",
+              transition: { duration: 0.8, ease: "easeInOut" }
+            }}
+            className="fixed inset-0 z-50 bg-[#0A0B10] flex flex-col justify-between p-6 sm:p-12 overflow-hidden select-none"
+          >
+            {/* Background Video */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+              <video
+                ref={openerVideoRef}
+                src="/hero-video.mp4"
+                autoPlay
+                muted={openerMuted}
+                playsInline
+                onEnded={handleDismissOpener}
+                className="w-full h-full object-cover opacity-60"
+              />
+              {/* Cinematic Vignette Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0B10] via-transparent to-[#0A0B10]/80 z-10 pointer-events-none" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,#0A0B10_90%)] z-10 pointer-events-none" />
+            </div>
+
+            {/* Opener Header */}
+            <div className="relative z-20 flex justify-between items-center w-full">
+              {/* Logo */}
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7DD3C0] to-[#4A90D9] flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-[#7DD3C0]/20">
+                  M
+                </div>
+                <span
+                  className="font-semibold text-lg tracking-tight text-white/90"
+                  style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
+                >
+                  MediFLOW
+                </span>
+              </div>
+
+              {/* Skip Button */}
+              <button
+                onClick={handleDismissOpener}
+                className="flex items-center gap-2 px-5 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/25 text-white text-xs font-semibold backdrop-blur-md transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg"
+              >
+                <span>Skip Intro</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Center Cinematic Content */}
+            <div className="relative z-20 flex flex-col items-center justify-center text-center max-w-3xl mx-auto my-auto px-4">
+              <motion.div
+                initial={{ opacity: 0, y: 35 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.8 }}
+                className="flex flex-col items-center gap-4"
+              >
+                {/* Launch Label */}
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-[#7DD3C0]/20 to-[#4A90D9]/20 border border-[#7DD3C0]/20 text-[#7DD3C0] text-[10px] uppercase font-bold tracking-widest">
+                  <Sparkles className="w-3 h-3 animate-pulse" />
+                  <span>Launch Presentation</span>
+                </div>
+
+                {/* Main Heading */}
+                <h1
+                  className="text-4xl sm:text-6xl text-white tracking-tight leading-tight mt-2 font-medium"
+                  style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
+                >
+                  The Operating System for{" "}
+                  <span className="bg-gradient-to-r from-[#7DD3C0] via-[#8AB4F8] to-[#4A90D9] bg-clip-text text-transparent font-medium">
+                    Modern Healthcare
+                  </span>
+                </h1>
+
+                {/* Subtitle */}
+                <p className="mt-4 text-sm sm:text-base text-slate-300 font-light max-w-xl leading-relaxed">
+                  Witness the next-generation clinical management suite. Unifying EHR, real-time vitals, and billing ledger in one beautiful workspace.
+                </p>
+
+                {/* Enter CTA */}
+                <button
+                  onClick={handleDismissOpener}
+                  className="mt-8 px-8 py-3.5 rounded-full bg-gradient-to-r from-[#7DD3C0] to-[#4A90D9] text-[#0A0B10] font-bold text-sm hover:shadow-[0_0_30px_rgba(125,211,192,0.4)] transition-all duration-300 transform hover:scale-105 active:scale-95"
+                >
+                  Enter Portal
+                </button>
+              </motion.div>
+            </div>
+
+            {/* Opener Footer */}
+            <div className="relative z-20 flex justify-between items-center w-full">
+              {/* Sound Controls */}
+              <button
+                onClick={() => setOpenerMuted(!openerMuted)}
+                className="flex items-center gap-2.5 px-4 py-2 rounded-full bg-black/40 hover:bg-black/60 border border-white/5 text-white/80 hover:text-white text-xs font-medium backdrop-blur-md transition-all duration-200"
+              >
+                {openerMuted ? (
+                  <>
+                    <VolumeX className="w-4 h-4 text-[#7DD3C0]" />
+                    <span>Unmute Cinematic Audio</span>
+                  </>
+                ) : (
+                  <>
+                    <Volume2 className="w-4 h-4 text-[#4A90D9] animate-bounce" />
+                    <span>Mute Audio</span>
+                  </>
+                )}
+              </button>
+
+              <div className="text-[10px] text-slate-400 font-semibold tracking-wider uppercase hidden sm:block">
+                MediFLOW 2.0 • Press Enter to Skip
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* === HERO SECTION === */}
       <div className="relative bg-slate-50 dark:bg-[#0F1117] text-slate-900 dark:text-white overflow-hidden min-h-screen flex flex-col justify-between">
         {/* Glowing waves canvas background */}
@@ -485,7 +621,7 @@ export default function RootPage() {
                 The operating system
                 <br />
                 for{" "}
-                <span className="bg-gradient-to-r from-teal-700 via-blue-600 to-indigo-600 dark:from-[#7DD3C0] dark:via-[#8AB4F8] dark:to-[#4A90D9] bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-teal-700 via-blue-600 to-indigo-600 dark:from-[#7DD3C0] dark:via-[#8AB4F8] dark:to-[#4A90D9] bg-clip-text text-transparent font-medium">
                   modern healthcare
                 </span>
               </motion.h1>
@@ -511,6 +647,16 @@ export default function RootPage() {
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
+                <button
+                  onClick={() => {
+                    setShowOpener(true);
+                    setOpenerMuted(false);
+                  }}
+                  className="h-10 px-6 rounded-full bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-[#0F1117] dark:hover:bg-white/90 font-medium text-xs transition-all duration-200 flex items-center gap-2 shadow-md dark:shadow-lg dark:shadow-white/10"
+                >
+                  <Play className="w-4 h-4 fill-current" />
+                  Watch Launch Video
+                </button>
               </motion.div>
 
               {/* Stats */}
@@ -525,7 +671,7 @@ export default function RootPage() {
                 ].map((stat) => (
                   <motion.div key={stat.label} variants={itemVariants}>
                     <p
-                      className="text-2xl sm:text-3xl text-slate-900 dark:text-white/90 tracking-tight"
+                      className="text-2xl sm:text-3xl text-slate-900 dark:text-white/90 tracking-tight font-medium"
                       style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
                     >
                       {stat.value}
@@ -536,8 +682,6 @@ export default function RootPage() {
                   </motion.div>
                 ))}
               </motion.div>
-
-
             </motion.div>
 
             {/* Right: Auth Card */}
@@ -645,7 +789,7 @@ export default function RootPage() {
 
                   {authError && (
                     <div className="bg-danger-bg border border-danger-border text-danger-text text-xs rounded-lg p-3 flex items-start gap-2" role="alert">
-                      <span className="font-bold mt-0.5">⚠</span>
+                      <span className="font-bold mt-0.5">⚠️</span>
                       <span>{authError}</span>
                     </div>
                   )}
@@ -934,7 +1078,7 @@ export default function RootPage() {
             </p>
           </div>
 
-          {/* Features Full-Width 4-Column Grid */}
+          {/* Features Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
@@ -1023,8 +1167,6 @@ export default function RootPage() {
           </div>
         </div>
       </footer>
-
-
     </div>
   );
 }
